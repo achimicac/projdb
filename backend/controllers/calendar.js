@@ -14,7 +14,7 @@ export const calendar = async (req, res, next) => {
                               if (error) throw error;
                               console.log(" Add event success ");
       })*/
-      db.query( 'SELECT Pet.petID petID, procID, date, status FROM User INNER JOIN Pet ON User.id = Pet.id INNER JOIN Appointment ON Pet.petID = Appointment.petID WHERE User.id = ? AND Appointment.date IS NOT NULL', [id], (error, results) => {
+      db.query( 'SELECT * FROM Pet INNER JOIN Appointment ON Pet.petID = Appointment.petID WHERE id = ? AND Appointment.date IS NOT NULL', [27], (error, results) => {
             console.log(results);
             res.all_event = results;
             return next();

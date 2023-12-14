@@ -18,6 +18,8 @@ import {petprofile} from '../controllers/petprofile.js';
 import {petdelete} from '../controllers/petDelete.js';
 import {petvaccine} from '../controllers/petvaccine.js';
 import {calendar} from '../controllers/calendar.js';
+import {article} from '../controllers/articles.js';
+import {appoint} from '../controllers/app.js';
 import json from "body-parser";
 export const router = express.Router();
 
@@ -44,9 +46,9 @@ router.get("/register", (req, res) => {
     res.sendFile("register.html", { root: "./public" });
 });
 
-router.get("/login", (req, res) => {
+/*router.get("/login", (req, res) => {
     res.sendFile("login.html", { root: "./public/" });
-});
+});*/
 
 router.get("/userprofile/:id", userprofile, (req, res, next) => {
     try {
@@ -67,18 +69,12 @@ router.get("/petregister", (req, res) => {
     res.render("home", {all_pet: res.all_pet});
     next();
 });*/
-router.get("/home/:id", allPet, (req, res, next)=>{
-    const data = res.all_pet;
-    return res.json(data);
-});
-
-router.get("/petprofile/:petid", petprofile, petvaccine, (req, res, next) => {
-    res.render("petprofile", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB), core_vac: res.core_vac});
-    next();
-})
 
 router.get("/petprofile/:petid/edit", petprofile, (req, res, next) => {
-    res.render("petEdit", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB)});
+    /*res.render("petEdit", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB)});
+    next();*/
+    const data = res.pet_inform;
+    return res.json(data);
     next();
 });
 
@@ -100,13 +96,13 @@ router.get("/all_events", calendar, (req, res) => {
   });
   
 
-router.get("/calendar", (req, res) => {
-    /*res.sendFile("calendar.html", {root: "./public/"}, (request, resp) => {
+/*router.get("/calendar", (req, res) => {
+    res.sendFile("calendar.html", {root: "./public/"}, (request, resp) => {
         resp.send({all_event: JSON.stringify(res.all_event)})
-    });*/
+    });
     res.sendFile("calendar.html", {root: "./public/", })
     //next();
-})
+})*/
 
 /*router.get("/userprofile/:id/petregister", (req, res, next) => {
     console.log(req.originalUrl);
@@ -132,6 +128,38 @@ router.get("/calendar", (req, res) => {
     });
 });*/
 
+
+/////////////////////////////////////////////////////////Edit with Frontend
+
+router.get("/login", (req, res) => {
+
+});
+
+router.get("/articles", article, (req, res, next) => {
+    const data = res.all_article;
+    return res.json(data);
+})
+
+router.get("/home", allPet, (req, res, next)=>{
+    const data = res.all_pet;
+    return res.json(data);
+});
+
+router.get("/petprofile/:petid", petprofile, (req, res, next) => {
+    const data = res.petinfo;
+
+    return res.json(data);
+})
+
+router.get("/petprofile/:petid/vaccine", petvaccine, (req, res, next) => {
+    const data = res.core_vac;
+    return res.json(data);
+})
+
+router.get("/calendar", calendar,  (res, req) => {
+    const data = res.all_event;
+    return res.json(data)
+})
 
 router.get("/logout", logout);
 

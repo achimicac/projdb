@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken';
 
 export const allPet = (req, res, next) => {
       //const id = jwt.decode(req.cookies.userRegistered, process.env.JWT_SECRET).id;
-      const id = req.params.id;
+      //const id = req.params.id;
       try {
-            db.query("SELECT *, TIMESTAMPDIFF(YEAR, petDoB, CURDATE()) AS years, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7 / 4) AS months, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7) AS weeks, TIMESTAMPDIFF(DAY, petDoB, CURDATE()) AS days FROM Pet WHERE id = ?", [id], (err, result) => {
+            db.query("SELECT *, TIMESTAMPDIFF(YEAR, petDoB, CURDATE()) AS years, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7 / 4) AS months, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7) AS weeks, TIMESTAMPDIFF(DAY, petDoB, CURDATE()) AS days FROM Pet WHERE id = ?", [27], (err, result) => {
                   if (err) {
                         return console.log("Can't found this user");
                   }else{

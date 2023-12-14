@@ -7,38 +7,6 @@ import jwt from 'jsonwebtoken';
 
 export const petEdit = async (req, res, next) => {
 
-      /*try{  
-            form.addEventListener("submit", () => {
-            const petedit = {
-                  petName: petName.value,
-                  petType: petType.value,
-                  petDoB: petDoB.value,
-                  petPfp: petPfp.value,
-                  petGender: petGender.value
-            };
-            //const id = JSON.parse(document.getElementById("userid").text);
-            //Can directly put them here
-            fetch(`/api/petprofile/${req.params.petid}/edit`, {
-                  method: "POST",
-                  body: JSON.stringify(petedit), //Body to be json that string you'll find in the string file text before sending and send the register
-                  headers: {"Content-Type": "application/json"}
-            })
-            .then ( res => res.json())
-            //Get and managing data
-            .then(data => {
-                  if (data.status == "error") {
-                        success.style.display = "none"
-                        error.style.display = "block"
-                        error.innerText = data.error
-                  }else {
-                        error.style.display = "none"
-                        success.style.display = "block"
-                        success.innerText = data.success
-                  }
-            });
-      
-      })} catch (err) { console.log(err) }*/
-
       const { petName, petType, petDoB, petPfp, petGender} = req.body;
 
       try {

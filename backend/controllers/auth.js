@@ -33,7 +33,7 @@ router.post("/userprofile/:id", userprofile)
 router.post("/petregister", petregister);
 router.post("/home", allPet);
 router.post("/petprofile/:petid", petprofile, petvaccine);
-router.post("/petprofile/:petid/edit", petEdit);
+router.put("/petprofile/:petid/edit", petEdit);
 router.post("/userprofile/:id/edit", userEdit);
 router.post("/calendar", add_event);
 

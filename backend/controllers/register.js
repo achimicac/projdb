@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");*/
 const saltRounds = 10;
 import {db} from '../routes/db-config.js';
+import fs from 'fs';
 import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
@@ -12,6 +13,15 @@ export const register = async (req, res) => {
       })
       else {
             console.log(username + " mail: " + email);
+            /*--- Image BLOB ---*/
+            function readImageFile(file) {
+                  // read binary data from a file:
+                  const bitmap = fs.readFileSync(file);
+                  const buf = new Buffer(bitmap);
+                  return buf;
+            }
+            const picdata = readImageFile(pfp);
+
             //const pw = bcrypt.hash(Npw, 8);
             //Check ว่าเคยลงไปยัง พวกstatus กับ error successเชื่อมอยู่กับหน้าregister.jsในpublicนะ
             db.query('SELECT * FROM User where username = ? OR email = ?', [username, email], async (err, result) => {
@@ -31,6 +41,7 @@ export const register = async (req, res) => {
                         bcrypt.hash(pw, saltRounds, function (err, hash){
                               db.query('INSERT INTO User SET ?', {username: username, pw: hash, fname: fname, lname: lname, email: email, phone: phone, pfp: pfp}, (error, results) => {
                                     if (error) throw error;
+                                    db.query('INSERT `INTO User(picdata)` VALUES(BINARY(:data)) WHERE username = ?', { picdata, username })
                                     return res.json({status: "success", success: "User has been registered"});
 })
                         })
