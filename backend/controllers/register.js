@@ -4,23 +4,17 @@ const saltRounds = 10;
 import {db} from '../routes/db-config.js';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export const register = async (req, res) => {
       const { username, pw, fname, lname, email, phone, pfp } = req.body;
-      if(!username || !pw || !fname || !lname || !email || !phone || !pfp) return res.json({
+      console.log(username, pw, fname, lname, email, phone, pfp)
+      if(!username || !pw || !fname || !lname || !email || !phone) return res.json({
             status: "error",
             error: "Please enter all your information"
       })
       else {
             console.log(username + " mail: " + email);
-            /*--- Image BLOB ---*/
-            function readImageFile(file) {
-                  // read binary data from a file:
-                  const bitmap = fs.readFileSync(file);
-                  const buf = new Buffer(bitmap);
-                  return buf;
-            }
-            const picdata = readImageFile(pfp);
 
             //const pw = bcrypt.hash(Npw, 8);
             //Check ว่าเคยลงไปยัง พวกstatus กับ error successเชื่อมอยู่กับหน้าregister.jsในpublicนะ
@@ -39,11 +33,11 @@ export const register = async (req, res) => {
                   }
                   else {
                         bcrypt.hash(pw, saltRounds, function (err, hash){
-                              db.query('INSERT INTO User SET ?', {username: username, pw: hash, fname: fname, lname: lname, email: email, phone: phone, pfp: pfp}, (error, results) => {
+                              db.query('INSERT INTO User SET ?', {username: username, pw: hash, fname: fname, lname: lname, email: email, phone: phone}, (error, results) => {
                                     if (error) throw error;
-                                    db.query('INSERT `INTO User(picdata)` VALUES(BINARY(:data)) WHERE username = ?', { picdata, username })
+
                                     return res.json({status: "success", success: "User has been registered"});
-})
+                              })
                         })
                   }
             })

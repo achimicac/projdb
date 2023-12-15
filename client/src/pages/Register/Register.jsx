@@ -32,14 +32,7 @@ const Register = () => {
         try {
 
             // Send the registration data to your server
-            const response = await axios.post('http://localhost:3009/register', {
-                fname: formData.fname,
-                lname: formData.lname,
-                username: formData.username,
-                email: formData.email,
-                phone: formData.phone,
-                pw: formData.pw
-            });
+            const response = await axios.post('http://localhost:3009/register', formData);
 
             // Handle the response accordingly
             console.log('Registration successful:', response.data);

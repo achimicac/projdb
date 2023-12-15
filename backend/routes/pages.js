@@ -52,6 +52,7 @@ router.get("/", loggedIn, (req, res) => {
     res.sendFile("login.html", { root: "./public/" });
 });*/
 router.post("/login", login);
+router.post("/register", register);
 
 router.get("/userprofile/:id", userprofile, (req, res, next) => {
     try {
