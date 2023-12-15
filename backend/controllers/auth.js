@@ -25,6 +25,7 @@ import {userEdit} from './useredit.js';
 import {petvaccine} from './petvaccine.js';
 import {calendar} from './calendar.js';
 import {add_event} from './addEventCalen.js';
+import { appoint } from './app.js';
 export const router = express.Router();
 
 router.post("/register", register);
@@ -36,5 +37,6 @@ router.post("/petprofile/:petid", petprofile, petvaccine);
 router.put("/petprofile/:petid/edit", petEdit);
 router.post("/userprofile/:id/edit", userEdit);
 router.post("/calendar", add_event);
+router.put("/appointment/:appid", appoint)
 
 //module.exports = router;

@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 //ว่าจะมาทำcheck เพิ่มว่าถ้าไม่ใช่เจ้าของsccountให้มันrenderหน้าอื่น
 
 export const petprofile = async (req, res, next) => {
-      console.log(req.params.petid)
+      console.log("req.params" + req.params.petid)
       try {
             db.query("SELECT * FROM Pet WHERE petID = ?", [req.params.petid], (err, result) => {
                   if (err) {

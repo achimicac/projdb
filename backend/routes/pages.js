@@ -21,6 +21,8 @@ import {calendar} from '../controllers/calendar.js';
 import {article} from '../controllers/articles.js';
 import {appoint} from '../controllers/app.js';
 import json from "body-parser";
+import { login } from "../controllers/login.js";
+import { register } from "../controllers/register.js";
 export const router = express.Router();
 
 function formatDate(dateString) {
@@ -42,13 +44,14 @@ router.get("/", loggedIn, (req, res) => {
     }
 });
 
-router.get("/register", (req, res) => {
+/*router.get("/register", (req, res) => {
     res.sendFile("register.html", { root: "./public" });
-});
+});*/
 
 /*router.get("/login", (req, res) => {
     res.sendFile("login.html", { root: "./public/" });
 });*/
+router.post("/login", login);
 
 router.get("/userprofile/:id", userprofile, (req, res, next) => {
     try {
@@ -131,9 +134,9 @@ router.get("/all_events", calendar, (req, res) => {
 
 /////////////////////////////////////////////////////////Edit with Frontend
 
-router.get("/login", (req, res) => {
-
-});
+router.get("/register", register, (req, res, next) => {
+    return res.status
+})
 
 router.get("/articles", article, (req, res, next) => {
     const data = res.all_article;
@@ -158,8 +161,12 @@ router.get("/petprofile/:petid/vaccine", petvaccine, (req, res, next) => {
 
 router.get("/calendar", calendar,  (res, req) => {
     const data = res.all_event;
-    return res.json(data)
+    return res                                                                                              
 })
+
+router.put("/appointment/:appid", appoint)
+
+
 
 router.get("/logout", logout);
 

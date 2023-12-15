@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt';
 export const login = async (req, res) => {
   try {
     const { username, pw } = req.body;
+    console.log("From login"+ username + " " + pw);
     if (!username || !pw)
       return res.json({
         status: "error",
@@ -41,7 +42,6 @@ export const login = async (req, res) => {
                     expiresIn: "30m", // or use process.env.JWT_EXPIRES
                   }
                 );
-
                 const cookieOptions = {
                   expiresIn: new Date(
                     Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
@@ -50,7 +50,8 @@ export const login = async (req, res) => {
                 };
 
                 res.cookie("userRegistered", token, cookieOptions);
-                res.json({ status: "success", success: "User logged in" });
+                res.status(200).json({ status: "success", success: "User logged in", token });
+                //res.json({ status: "success", success: "User logged in" });
               } else {
                 return res.json({
                   status: "error",
