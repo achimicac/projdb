@@ -22,12 +22,15 @@ export const register = async (req, res) => {
                   console.log("from db: " + result[0]);
                   if (err) throw err;
                   if (result[0]) {
-                        if (result[0].username === username) {
-                              res.json({status: "error", error: "This username has already been in use"});
-                        }
-                        if (result[0].email === email)
-                        {
-                              res.json({status: "error", error: "This email has already been in use"});
+                        if(result[0].username === username && result[0].email === email){
+                              res.json({status: "error", error: "This username and email are already been in use"})
+                        }else{
+                              if (result[0].username === username) {
+                                    res.json({status: "error", error: "This username has already been in use"});
+                              }
+                              else{
+                                    res.json({status: "error", error: "This email has already been in use"});
+                              }
                         }
                   }
                   else {

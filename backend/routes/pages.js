@@ -12,7 +12,7 @@ export const router = express.Router();*/
 import express from "express";
 import {loggedIn} from '../controllers/loggedIn.js';
 import {logout} from '../controllers/logout.js';
-/*import {userprofile} from '../controllers/userprofile.js';
+import {userprofile} from '../controllers/userprofile.js';
 import {allPet} from '../controllers/home.js';
 import {petprofile} from '../controllers/petprofile.js';
 import {petdelete} from '../controllers/petDelete.js';
@@ -20,12 +20,12 @@ import {petvaccine} from '../controllers/petvaccine.js';
 import {calendar} from '../controllers/calendar.js';
 import {article} from '../controllers/articles.js';
 import {appoint} from '../controllers/app.js';
-import json from "body-parser";
 import { login } from "../controllers/login.js";
 import { petregister } from "../controllers/petregister.js";
-import { petEdit } from "../controllers/petedit.js";*/
+import { petEdit } from "../controllers/petedit.js";
+import { register } from "../controllers/register.js";
 
-import {register, login, petregister, petEdit, petdelete, calendar, article, allPet, petprofile, petvaccine, appoint, userprofile} from "../controllers/AllMethod.js";
+//import {register, login, petregister, petEdit, petdelete, calendar, article, allPet, petprofile, petvaccine, appoint, userprofile} from "../controllers/AllMethod.js";
 export const router = express.Router();
 
 function formatDate(dateString) {
@@ -37,14 +37,20 @@ function formatDate(dateString) {
     return `${year}-${month}-${day}`;
 }
 
-router.get("/", loggedIn, (req, res) => {
+/*router.get("/", loggedIn, (req, res) => {
     if (req.user) {
+        res.redirect('/home')
         res.render("index", {status: "loggedIn", name: req.user.username, id: req.user.id});
         console.log("From pages.js: " + req.user.username);
     } else {
+        router.get('/login', login)
         res.render("index", {status: "no", name: "nothing"});
         console.log('Ihere');
     }
+});*/
+
+router.get('/', loggedIn, (req, res) => {
+    return res.json({status: "success"})
 });
 
 /*router.get("/register", (req, res) => {
@@ -66,8 +72,8 @@ router.post("/register", register);
     }
 });*/
 
-router.get("/petregister", petregister);
-router.post("/petregister", petregister);
+/*router.get("/petregister", petregister);
+router.post("/petregister", petregister);*/
 
 /*router.get("/home", allPet, (req, res, next) => {
     res.render("home", {all_pet: res.all_pet});
@@ -100,7 +106,7 @@ router.get("/all_events", calendar, (req, res) => {
     // For example, let's say you have an array of events
     const allEvents = res.all_event;
   
-    res.json({ allEvents }); // Sending the events as JSON
+    res.json(allEvents); // Sending the events as JSON
   });
   
 
@@ -139,17 +145,10 @@ router.get("/all_events", calendar, (req, res) => {
 
 /////////////////////////////////////////////////////////Edit with Frontend
 
-/*router.get("/register", register, (req, res, next) => {
-    return res.status
-})*/
-
 router.post("/register", register, (req, res) => {
     res.redirect('/login')
 });
 
-router.get("/register", register, (req, res, next) => {
-    return res.status
-})
 
 router.get("/articles", article, (req, res, next) => {
     const data = res.all_article;

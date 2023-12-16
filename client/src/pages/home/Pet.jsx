@@ -7,15 +7,30 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
 const Pet = () => {
-    
+    const navigate = useNavigate();
+
+    const [auth, setAuth] = useState(false);
     const [pets, setPet] = useState([]);
     const [pic, setPic] = useState([]);
 
+    axios.defaults.withCredentials = true;
+
     useEffect(()=>{
+        
+        axios.get('http://localhost:3009/').then(res => {
+            if (res.data.status === "success") {
+                setAuth(true)
+                navigate('/login')
+            } else {
+                setAuth(false)
+                navigate('/home')
+            }
+        })
+
         const fetchAllPets = async ()=>{
             try{
-                const res = await axios.get("http://localhost:3009/home");
-                setPet(res.data);
+                const respone = await axios.get("http://localhost:3009/home");
+                setPet(respone.data);
             }catch(err){
                 console.log(err);
             }
@@ -32,6 +47,13 @@ const Pet = () => {
         fetchPetPfp();
         fetchAllPets();
     }, []);
+
+    const handleDelete = async () => {
+        axios.get('http://localhost:3009/logout')
+        .then(res => {
+            window.location.reload(true);
+        })
+    }
     
     return (
         <div className="home">
@@ -75,7 +97,7 @@ const Pet = () => {
                             <figcaption>BBBB</figcaption>
                     </figure>
                     <div class="addpet">
-                        <a href="#"><Link to="/petregister"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                        <a href="#"><Link to="/login" onClick={handleDelete}><i class="fa-solid fa-plus fa-4x"></i></Link></a>
                     </div>
                 </div>
             </main>

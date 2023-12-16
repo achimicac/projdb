@@ -11,47 +11,23 @@ import PetInfo from "./pages/PetInfo/PetInfo"
 import Calendar from "./pages/Calendar/Calendar";
 import Login from "./pages/login/Login"
 import Register from "./pages/Register/Register"
-import { Cookies } from "react-cookie";
 import jwt from 'jwt-decode';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import Profile from "./pages/userprof/Profile";
 import Addpet from "./pages/Addpet/Addpet";
 import Records from "./pages/Record/Record";
-
+import Cookies from "universal-cookie";
 
 function App() {
-  /*const [user, setUser] = useState();
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getUsers = async() => {
-      try {
-        const response = await axios.get('http://localhost:3009/users', {
-          signal: controller.signal
-        })
-        isMounted && setUser(response.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    getUsers();
-    return () => {
-      isMounted = false;
-      controller.abort();
-    }
-  }, [])
-
-
-  /*function handleLogin(token) {
-    setCookie("userRegistered", token, { path: "/" });
-  }*/
+  const cookies = new Cookies();
+  const [user, setUser] = useState(null);
 
   return (
       <BrowserRouter>
         <Routes>
+        <Route path="/" element={<Pet />} />
+        <Route path="/logout" element={<Pet />} />
                 <Route path="/home" element={<Pet />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/articles" element={<Articles />} />

@@ -3,14 +3,17 @@ import './login.css';
 import { useNavigate, Link, NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
-const Login = ({onlogin}) => {
-    
+const Login = () => {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         username: '',
         pw: '',
     });
+
+    axios.defaults.withCredentials = true;
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -24,9 +27,6 @@ const Login = ({onlogin}) => {
             });
             if (response.data.status === "success") {
                 alert(response.data.success);
-                const token = response.data.token;
-                console.log(token);
-                document.cookie = `userRegistered=${token}; expires=/* expiry date */; path=/`;
                 navigate('/home');
             }
             else {

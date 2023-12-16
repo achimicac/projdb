@@ -3,9 +3,10 @@ import { useState } from 'react';
 import './Register.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         fname: '',
         lname: '',
@@ -32,14 +33,16 @@ const Register = () => {
         try {
 
             // Send the registration data to your server
-<<<<<<< HEAD
-            const response = await axios.post('http://localhost:3009/register', formData);
-=======
             const response = await axios.post('http://localhost:3009/register', formData)
->>>>>>> b85461c (OOP Ver)
 
             // Handle the response accordingly
-            console.log('Registration successful:', response.data);
+            if(response.data.status === "error"){
+                alert(response.data.error)
+            }
+            else{
+                alert(response.data.success)
+                navigate('/login')
+            }
             
         } catch (error) {
             // Handle registration error

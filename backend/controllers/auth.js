@@ -29,7 +29,7 @@ import { appoint } from './app.js';
 export const router = express.Router();
 
 //router.post("/register", register);
-router.post("/login", login);
+/*router.post("/login", login);
 router.post("/userprofile/:id", userprofile)
 router.post("/petregister", petregister);
 router.post("/home", allPet);
@@ -37,6 +37,6 @@ router.post("/petprofile/:petid", petprofile, petvaccine);
 router.put("/petprofile/:petid/edit", petEdit);
 router.post("/userprofile/:id/edit", userEdit);
 router.post("/calendar", add_event);
-router.put("/appointment/:appid", appoint)
+router.put("/appointment/:appid", appoint)*/
 
 //module.exports = router;

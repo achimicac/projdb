@@ -36,7 +36,7 @@ export const login = async (req, res) => {
               if (isMatch) {
                 const id = results[0].id;
                 const token = jwt.sign(
-                  { id: id, username: results[0].username },
+                  { id: id},
                   process.env.JWT_SECRET,
                   {
                     expiresIn: "30m", // or use process.env.JWT_EXPIRES
@@ -47,16 +47,11 @@ export const login = async (req, res) => {
                     Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
                   ),
                   httpOnly: true,
+                  path: '/'
                 };
 
-<<<<<<< HEAD
                 res.cookie("userRegistered", token, cookieOptions);
-                console.log(req.cookies)
-=======
-                res.cookie("userRegistered", token);
-                console.log("cookie" + req.cookies.userRegistered);
->>>>>>> b85461c (OOP Ver)
-                res.status(200).json({ status: "success", success: "User logged in", token });
+                res.status(200).json({ status: "success", success: "User logged in",token, cookieOptions});
                 //res.json({ status: "success", success: "User logged in" });
               } else {
                 return res.json({
