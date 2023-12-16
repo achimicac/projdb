@@ -1,9 +1,11 @@
-/*const db = require("../routes/db-config.js");
-const jwt = require("jsonwebtoken");*/
-import {db} from '../routes/db-config.js';
+import { db } from '../routes/db-config.js';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import zlib from 'zlib';
+import stream from 'stream';
 
 export const allPet = (req, res, next) => {
+<<<<<<< HEAD
       /*
       const storedCookies = req.cookie.split(';').reduce((acc, cookie) => {
             const [key, value] = cookie.split('=').map(c => c.trim());
@@ -28,9 +30,23 @@ export const allPet = (req, res, next) => {
             })
       } catch (error) {
             throw error;      
+=======
+  try {
+    db.query("SELECT *, TIMESTAMPDIFF(YEAR, petDoB, CURDATE()) AS years, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7 / 4) AS months, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7) AS weeks, TIMESTAMPDIFF(DAY, petDoB, CURDATE()) AS days FROM Pet WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        console.log("Can't find this user");
+        return res.status(404).send("Can't find this user");
+      } else {
+        const bufferBase64 = Buffer.from(result[0].petPfp, 'binary').toString('base64');
+
+        res.petData = result;
+        res.petPic = bufferBase64;
+        
+        return next();
+>>>>>>> b85461c (OOP Ver)
       }
-}
-
-//module.exports = allPet;
-
-/*SELECT *, TIMESTAMPDIFF(YEAR, petDoB, CURDATE()) AS years, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7 / 4) AS months, FLOOR(TIMESTAMPDIFF(DAY, petDoB, CURDATE()) / 7) AS weeks, TIMESTAMPDIFF(DAY, petDoB, CURDATE()) AS days FROM Pet*/
+    });
+  } catch (error) {
+    throw error;
+  }
+};

@@ -8,18 +8,18 @@ import jwt from 'jsonwebtoken';
 
 export const userprofile = async (req, res, next) => {
       try {
-            db.query('SELECT * FROM User WHERE id = ?', [req.params.id], (err, result) => {
+            db.query('SELECT * FROM User WHERE id = ?', [27], (err, result) => {
                   if (err) {
                         return console.log("Can't found this user");
                   }else{
                         //console.log("from userprofile.js: " + req.params.id + " name: " + result[0].username);
-                        const row = res[0];
+                        /*const row = res[0];
                         const picdata = row.pfp;
                         const buf = new Buffer(picdata, "binary");
-                        fs.writeFileSync(outputfile, buf);
-                        res.userdata = result[0];
-                        res.pic = outputfile
-                        return next();
+                        fs.writeFileSync(outputfile, buf);*/
+                        return res.userdata = result;
+                        //res.pic = outputfile
+                        next();
                   }
             })
       } catch (error) {

@@ -54,8 +54,8 @@ const Addpet = () => {
 
         e.preventDefault()
         try{
-            await axios.post("", pet) //ใส่หน้าในนี้ด้วยเด้อ
-            navigate("/")
+            await axios.post("http://localhost:3009/petregister", pet) //ใส่หน้าในนี้ด้วยเด้อ
+            navigate("/home")
         }
         catch(err){console.error(err)}
     }
@@ -72,7 +72,7 @@ const Addpet = () => {
             <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
         </Helmet>
         <div class="back">
-                <a href="#"><Link to='/'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
+                <a href="#"><Link to='/home'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
         </div>
         <main>
             <form action="">
@@ -92,7 +92,6 @@ const Addpet = () => {
                     <select id="type" name="petType" onChange={handleChange}>
                         <option value="Cat">Cat</option>
                         <option value="Dog">Dog</option>
-                        <option value="Rabbit">Rabbit</option>
                     </select>
                     <p>Gender</p>
                     <div class="selectGender">
@@ -117,7 +116,7 @@ const Addpet = () => {
 
         <nav class="navigate">
             <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-            <Link to="/"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+            <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
             <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
         </nav>
         </div>

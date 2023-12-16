@@ -11,7 +11,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await axios.get("http://localhost:8800/profile");
+                const res = await axios.get("http://localhost:3009/profile");
                 setProfile(res.data);
             } catch (err) {
                 console.log(err);
@@ -44,10 +44,7 @@ const Profile = () => {
                     <div class="mid-container">
                         <div class="profile-picture-container">
                             <h2>User Profile</h2>
-                                {user.id && <img src={user.pfp} alt="Profile Picture" />}
-                                <div class="edit-icon">
-                                    <Link to="/edit-user"><i class="fas fa-edit fa-2x"></i></Link>
-                                </div>
+                                
                         </div>
                     </div>
                     <table>
@@ -80,7 +77,7 @@ const Profile = () => {
 
                 <nav class="navigate">
                     <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-                    <Link to="/"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+                    <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
                     <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
                 </nav>
             </body>

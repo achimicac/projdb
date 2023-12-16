@@ -51,7 +51,7 @@ const EditPet = () => {
     useEffect(() => {
         const fetchPetData = async () => {
             try {
-                const response = await axios.get(`/api/users/${petId}`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3009/petprofile/27`); // Replace with your API endpoint
                 setPet(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -65,8 +65,8 @@ const EditPet = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:8000/users/${petId}`, pet); // Replace with your API endpoint
-            navigate("/pet-info")
+            await axios.put(`http://localhost:3009/petprofile/27/edit`, pet); // Replace with your API endpoint
+            navigate(`/petprofile/27`)
         } catch (error) {
             console.error(error);
             // Handle error (e.g., show an error message)
@@ -130,7 +130,7 @@ const EditPet = () => {
 
             <nav class="navigate">
                 <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-                <Link to="/"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+                <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
                 <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
             </nav>
         </div>

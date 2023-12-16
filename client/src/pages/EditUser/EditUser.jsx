@@ -21,7 +21,7 @@ const EditUser = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`/api/users/${userId}`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3009/home`); // Replace with your API endpoint
                 setUser(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -39,7 +39,7 @@ const EditUser = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:8000/users/${userId}`, user); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/users/${userId}`, user); // Replace with your API endpoint
             navigate("/profile")
         } catch (error) {
             console.error(error);

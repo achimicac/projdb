@@ -39,8 +39,7 @@ const Calendar = () => {
 
         try {
             const updatedAppointment = { ...appointment, status: !appointment.status ? '' : 'completed' };
-            await axios.put(`http://localhost:3009/appointment/:appid`, appointment); // Replace with your API endpoint
-            console.log("app" + appointment);
+            await axios.put(`http://localhost:3009/calendar `, appointment); // Replace with your API endpoint
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -51,9 +50,8 @@ const Calendar = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/calendar`, appointment); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/appoint`, appointment); // Replace with your API endpoint
             navigate("/calendar")
-            console.log("app" + appointment);
         } catch (error) {
             console.error(error);
         }
@@ -73,34 +71,42 @@ const Calendar = () => {
                 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
                 <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
             </Helmet>
-            <main>
-            {showapp.map(app => (
+            <header>
+                <h1>Today Checklist</h1>
+            </header>
 
-                    <div className="appointment" key={app.appID}>
-                        {app.userID && <h2>{app.procName}</h2>}
-                        <span>for {app.petName}</span>
+            <main>
+                {showapp.map(app => (
+                    <div className='container'>
+                        <div className="appointment" key={app.appID}>
+                            {app.userID && <h2>{app.procName}</h2>}
+                            <span>for {app.petName}</span>
+                        </div>
                         <div className="changing-box">
                             <input type='date' name="date" onChange={handleChange} />
                             <div class="CancelAndSubmit">
                                 <button id="cancel" class="button" onClick={handleClick}>Cancel</button>
                                 <button id="submit" class="button" type="submit" name="submit"
                                     onClick={handleChangeDate}>Save Changes</button>
-                                <div class='checkbox-wrapper-31'><input type='checkbox' checked={appointment.status === 'complete'} onClick={handleCheck} /><svg viewBox='0 0 35.6 35.6'><circle class='background' cx='17.8' cy='17.8' r='17.8'></circle><circle class='stroke' cx='17.8' cy='17.8' r='14.37'></circle><polyline class='check' points='11.78 18.12 15.55 22.23 25.17 12.87'></polyline></svg></div>
-
                             </div>
+                            <div class='checkbox-wrapper-31'><input type='checkbox' checked={appointment.status === 'complete'} onClick={handleCheck} /><svg viewBox='0 0 35.6 35.6'><circle class='background' cx='17.8' cy='17.8' r='17.8'></circle><circle class='stroke' cx='17.8' cy='17.8' r='14.37'></circle><polyline class='check' points='11.78 18.12 15.55 22.23 25.17 12.87'></polyline></svg></div>
                         </div>
                     </div>
-
                 ))}
-                <div className="changing-box">
-                    <input type='date' name="date" onChange={handleChange} />
-                    <div class="CancelAndSubmit">
-                        <button id="cancel" class="button" onClick={handleClick}>Cancel</button>
-                        <button id="submit" class="button" type="submit" name="submit"
-                            onClick={handleChangeDate}>Save Changes</button>
-                        <div class='checkbox-wrapper-31'><input type='checkbox' checked={appointment.status === 'complete'} onClick={handleCheck} /><svg viewBox='0 0 35.6 35.6'><circle class='background' cx='17.8' cy='17.8' r='17.8'></circle><circle class='stroke' cx='17.8' cy='17.8' r='14.37'></circle><polyline class='check' points='11.78 18.12 15.55 22.23 25.17 12.87'></polyline></svg></div>
-
+                {/* อาจเอา map ครอบ container */}
+                <div className='container'>
+                    <div className="appointment">
+                        <h2>Procedure</h2>
+                        <span>for Catty</span>
                     </div>
+                    <div className="changing-box">
+                        <span>Change Date to </span><input type='date' name="date" />
+                        <div class="CancelAndSubmit">
+                            <button id="cancel" class="button" >Cancel</button>
+                            <button id="submit" class="button" type="submit" name="submit">Save Changes</button>
+                        </div>
+                    </div>
+                    <div class='checkbox-wrapper-31'><input type='checkbox' /><svg viewBox='0 0 35.6 35.6'><circle class='background' cx='17.8' cy='17.8' r='17.8'></circle><circle class='stroke' cx='17.8' cy='17.8' r='14.37'></circle><polyline class='check' points='11.78 18.12 15.55 22.23 25.17 12.87'></polyline></svg></div>
                 </div>
             </main>
             <nav class="navigate">

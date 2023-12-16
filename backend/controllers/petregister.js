@@ -7,9 +7,9 @@ import bcrypt from 'bcryptjs';
 
 export const petregister = async (req, res) => {
       const { petName, petType, petDoB, petPfp, petGender} = req.body;
-      const userId = jwt.decode(req.cookies.userRegistered, process.env.JWT_SECRET);
-      const id = userId.id;
-      console.log("From con/petregister: " + id);
+      //const userId = jwt.decode(req.cookies.userRegistered, process.env.JWT_SECRET);
+      //const id = userId.id;
+      
       try {
       if(!petName || !petType || !petDoB || !petPfp || !petGender) return res.json({
             status: "error",
@@ -19,7 +19,7 @@ export const petregister = async (req, res) => {
 
             console.log("From control/petregister: " + " : " + petName + " " + petDoB + " " + petGender + " userid: " + id);
             //Check ว่าเคยลงไปยัง พวกstatus กับ error successเชื่อมอยู่กับหน้าregister.jsในpublicนะ
-            db.query('SELECT * FROM Pet WHERE id = ? and petName = ?', [id, petName], async (err, result) => {
+            db.query('SELECT * FROM Pet WHERE id = ? and petName = ?', [27, petName], async (err, result) => {
                   //console.log("from db: " + result[0].username + " " + result[0].email);
                   console.log("from db: " + result[0]);
                   if (err) throw err;
@@ -31,7 +31,7 @@ export const petregister = async (req, res) => {
                               if (error) throw error;
                               res.json({status: "success", success: "your pet is ready!"});
 
-                              db.query('SELECT * FROM Pet where id = ? and petName = ?', [id, petName], (peterr, petresult) => {
+                              db.query('SELECT * FROM Pet where id = ? and petName = ?', [27, petName], (peterr, petresult) => {
                                     console.log(petresult);
                                     if (peterr) {
                                           console.log(peterr);

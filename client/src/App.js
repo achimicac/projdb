@@ -15,11 +15,13 @@ import { Cookies } from "react-cookie";
 import jwt from 'jwt-decode';
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { get } from "mongoose";
+import Profile from "./pages/userprof/Profile";
+import Addpet from "./pages/Addpet/Addpet";
+import Records from "./pages/Record/Record";
 
 
 function App() {
-  const [user, setUser] = useState();
+  /*const [user, setUser] = useState();
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -54,11 +56,14 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/petprofile/:petid" element={<PetInfo />} />
+                <Route path="/petprofile/:petid/edit" element={<EditPet />} />
+                <Route path="/petregister" element={<Addpet />} />
                 <Route path="/petprofile/:petid/vaccine" element={<PetInfo />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/appointment/:appid" element={<Calendar />} />
-
+                <Route path="/records" element={<Records />} />
         </Routes>
     </BrowserRouter>
   );

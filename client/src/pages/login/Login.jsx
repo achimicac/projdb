@@ -25,6 +25,7 @@ const Login = ({onlogin}) => {
             if (response.data.status === "success") {
                 alert(response.data.success);
                 const token = response.data.token;
+                console.log(token);
                 document.cookie = `userRegistered=${token}; expires=/* expiry date */; path=/`;
                 navigate('/home');
             }

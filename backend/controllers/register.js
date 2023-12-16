@@ -1,5 +1,4 @@
-/*const db = require("../routes/db-config.js");
-const bcrypt = require("bcrypt");*/
+
 const saltRounds = 10;
 import {db} from '../routes/db-config.js';
 import fs from 'fs';

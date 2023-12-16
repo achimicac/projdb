@@ -11,7 +11,7 @@ const Records = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const res = await axios.get("http://localhost:8800/records");
+                const res = await axios.get("http://localhost:3009/records");
                 setRecords(res.data);
             } catch (err) {
                 console.log(err);
@@ -35,7 +35,7 @@ const Records = () => {
             <body>
                 <header>
                     <div class="back">
-                        <Link to="/pet-info"></Link><a href="#"><i class="fa-solid fa-chevron-left fa-3x"></i></a>
+                        <Link to="/petprofile/:27"></Link><a href="#"><i class="fa-solid fa-chevron-left fa-3x"></i></a>
                     </div>
                     <h1>{records.petName}'s record</h1>
                 </header>

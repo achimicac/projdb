@@ -49,8 +49,13 @@ export const login = async (req, res) => {
                   httpOnly: true,
                 };
 
+<<<<<<< HEAD
                 res.cookie("userRegistered", token, cookieOptions);
                 console.log(req.cookies)
+=======
+                res.cookie("userRegistered", token);
+                console.log("cookie" + req.cookies.userRegistered);
+>>>>>>> b85461c (OOP Ver)
                 res.status(200).json({ status: "success", success: "User logged in", token });
                 //res.json({ status: "success", success: "User logged in" });
               } else {

@@ -28,7 +28,7 @@ import {add_event} from './addEventCalen.js';
 import { appoint } from './app.js';
 export const router = express.Router();
 
-router.post("/register", register);
+//router.post("/register", register);
 router.post("/login", login);
 router.post("/userprofile/:id", userprofile)
 router.post("/petregister", petregister);

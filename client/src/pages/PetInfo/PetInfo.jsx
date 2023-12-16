@@ -47,7 +47,7 @@ const PetInfo = () => {
         // Fetch data from the second path
         const fetchVaccine = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/petprofile/${petid}/vaccine`);
+                const response = await axios.get(`http://localhost:3009/petprofile/27/vaccine`);
                 setVaccine(response.data);
             } catch (error) {
                 console.error('Error fetching vaccine data:', error);
@@ -93,7 +93,7 @@ const PetInfo = () => {
                                 </tr>
                             </table>
                         </div>
-                        <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="/petprofile/:petid/edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     </div>
 
                 ))}
@@ -176,7 +176,7 @@ const PetInfo = () => {
             </body>
             <nav className="navigate">
                 <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-                <Link to="/"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+                <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
                 <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
             </nav>
         </div>

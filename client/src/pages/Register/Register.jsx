@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './Register.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -32,10 +32,15 @@ const Register = () => {
         try {
 
             // Send the registration data to your server
+<<<<<<< HEAD
             const response = await axios.post('http://localhost:3009/register', formData);
+=======
+            const response = await axios.post('http://localhost:3009/register', formData)
+>>>>>>> b85461c (OOP Ver)
 
             // Handle the response accordingly
             console.log('Registration successful:', response.data);
+            
         } catch (error) {
             // Handle registration error
             console.error('Registration error:', error);

@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Pet = () => {
     
     const [pets, setPet] = useState([]);
+    const [pic, setPic] = useState([]);
 
     useEffect(()=>{
         const fetchAllPets = async ()=>{
@@ -19,6 +20,16 @@ const Pet = () => {
                 console.log(err);
             }
         }
+        const fetchPetPfp = async () => {
+            try {
+                const response = await axios.get('http://localhost:3009/pic');
+                setPic(response.data);
+            } catch (error) {
+                console.error('Error fetching pet data:', error);
+            }
+        };
+
+        fetchPetPfp();
         fetchAllPets();
     }, []);
     
@@ -37,7 +48,7 @@ const Pet = () => {
                 <img src={logoDog} alt="Logo" />
                 <nav className="Profile">
                     
-                    <a href="#" className="user"><i className="fa-solid fa-user fa-2x"></i></a>
+                    <a href="/userprofile" className="user"><i className="fa-solid fa-user fa-2x"></i></a>
                 </nav>
             </header>
             <main>
@@ -45,7 +56,8 @@ const Pet = () => {
                     {pets.map(pet=>(
                         <figure className='pet' key={pet.petID}>
                             <Link to={`/petprofile/${pet.petID}`} style={{ textDecoration: 'none' }}>
-                                {pet.id && <img src={pet.petPfp} alt="" />}
+
+                                {pet.id && <img src={pet.petpic} alt="" />}
                                 <figcaption>{pet.petName}</figcaption>
                             </Link>
                         </figure>
@@ -53,7 +65,7 @@ const Pet = () => {
                     
                     
                     <figure>
-                        <Link to='/add-pet'><img
+                        <Link to='/petregister'><img
                             src="https://hips.hearstapps.com/hmg-prod/images/chow-chow-portrait-royalty-free-image-1652926953.jpg?crop=0.44455xw:1xh;center,top&resize=980:*" />
                             <figcaption>Aert</figcaption></Link>
                     </figure>
@@ -63,7 +75,7 @@ const Pet = () => {
                             <figcaption>BBBB</figcaption>
                     </figure>
                     <div class="addpet">
-                        <a href="#"><Link to="/add-pet"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                        <a href="#"><Link to="/petregister"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
                     </div>
                 </div>
             </main>

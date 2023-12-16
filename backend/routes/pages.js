@@ -12,7 +12,7 @@ export const router = express.Router();*/
 import express from "express";
 import {loggedIn} from '../controllers/loggedIn.js';
 import {logout} from '../controllers/logout.js';
-import {userprofile} from '../controllers/userprofile.js';
+/*import {userprofile} from '../controllers/userprofile.js';
 import {allPet} from '../controllers/home.js';
 import {petprofile} from '../controllers/petprofile.js';
 import {petdelete} from '../controllers/petDelete.js';
@@ -22,7 +22,10 @@ import {article} from '../controllers/articles.js';
 import {appoint} from '../controllers/app.js';
 import json from "body-parser";
 import { login } from "../controllers/login.js";
-import { register } from "../controllers/register.js";
+import { petregister } from "../controllers/petregister.js";
+import { petEdit } from "../controllers/petedit.js";*/
+
+import {register, login, petregister, petEdit, petdelete, calendar, article, allPet, petprofile, petvaccine, appoint, userprofile} from "../controllers/AllMethod.js";
 export const router = express.Router();
 
 function formatDate(dateString) {
@@ -54,38 +57,39 @@ router.get("/", loggedIn, (req, res) => {
 router.post("/login", login);
 router.post("/register", register);
 
-router.get("/userprofile/:id", userprofile, (req, res, next) => {
+/*router.get("/userprofile/:id", userprofile, (req, res, next) => {
     try {
         res.render("userprofile", {id: res.userdata.id, username: res.userdata.username});
         next();
     } catch (error) {
         console.log(error);
     }
-});
+});*/
 
-router.get("/petregister", (req, res) => {
-    res.sendFile("petregister.html", {root: "./public/"});
-    console.log("From routes/pages.js/petregister--sendFile");
-    //res.send("/home");
-});
+router.get("/petregister", petregister);
+router.post("/petregister", petregister);
 
 /*router.get("/home", allPet, (req, res, next) => {
     res.render("home", {all_pet: res.all_pet});
     next();
 });*/
 
-router.get("/petprofile/:petid/edit", petprofile, (req, res, next) => {
-    /*res.render("petEdit", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB)});
-    next();*/
+/*router.get("/petprofile/:petid/edit", petprofile, (req, res, next) => {
+    res.render("petEdit", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB)});
+    next();
     const data = res.pet_inform;
     return res.json(data);
     next();
-});
+});*/
 
-router.get("/userprofile/:id/edit", userprofile, (req, res, next) => {
+router.put("/petprofile/:petid/edit", petEdit, (req, res)=> {
+    res.redirect("/petprofile/:petid")
+})
+
+/*router.get("/userprofile/:id/edit", userprofile, (req, res, next) => {
     res.render("userEdit", {user_inform: res.userdata});
     next();
-});
+});*/
 
 router.get("/petprofile/:petid/delete", petdelete,(req, res) => {
     res.redirect('/home');
@@ -135,6 +139,14 @@ router.get("/all_events", calendar, (req, res) => {
 
 /////////////////////////////////////////////////////////Edit with Frontend
 
+/*router.get("/register", register, (req, res, next) => {
+    return res.status
+})*/
+
+router.post("/register", register, (req, res) => {
+    res.redirect('/login')
+});
+
 router.get("/register", register, (req, res, next) => {
     return res.status
 })
@@ -145,13 +157,17 @@ router.get("/articles", article, (req, res, next) => {
 })
 
 router.get("/home", allPet, (req, res, next)=>{
-    const data = res.all_pet;
+    const data = res.petData;
     return res.json(data);
+    
 });
 
-router.get("/petprofile/:petid", petprofile, (req, res, next) => {
-    const data = res.petinfo;
+router.get("/records", appoint, (req, res, next) => {
+    const data = res
+} )
 
+router.get("/petprofile/:petid", petprofile, (req, res) => {
+    const data = res.petinfo;
     return res.json(data);
 })
 
@@ -162,10 +178,15 @@ router.get("/petprofile/:petid/vaccine", petvaccine, (req, res, next) => {
 
 router.get("/calendar", calendar,  (res, req) => {
     const data = res.all_event;
-    return res                                                                                              
+    return res.json(data)                                                                                              
 })
 
 router.put("/appointment/:appid", appoint)
+
+router.get("/profile", userprofile, (req, res) => {
+    const data = res.userdata
+    return res.json(data);
+})
 
 
 
