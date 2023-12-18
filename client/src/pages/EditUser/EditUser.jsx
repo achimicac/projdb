@@ -13,6 +13,10 @@ const EditUser = () => {
 
     //const userId = location.pathname.split("/")[2]
 
+    const handleChange =  (e) => {
+         setUser({ ...user, [e.target.name]: e.target.value });
+    };
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -26,16 +30,23 @@ const EditUser = () => {
         fetchUserData();
     });
 
-    const handleChange =  (e) => {
-         setUser({ ...user, [e.target.name]: e.target.value });
-    };
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
 
+        if (user.pw !== user.conf_pw) {
+            alert('Password and confirm password do not match. Please try again.');
+            return;
+        }
+
         try {
-            await axios.put(`http://localhost:3009/userprofile/edit`, user); // Replace with your API endpoint
-            navigate("/profile")
+            const resEdit = await axios.put(`http://localhost:3009/userprofile/edit`, user); // Replace with your API endpoint
+            if (resEdit.data.status === "success") {
+                alert(resEdit.data.success);
+                navigate(`/petprofile/${petid}`)
+            } else {
+                alert(resEdit.data.error);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -45,37 +56,14 @@ const EditUser = () => {
         navigate("/profile")
     }
 
-    window.onload = function () {
-        const inputFile = document.getElementById('file');
-        const imgArea = document.querySelector('.img-area');
-
-        inputFile.addEventListener('change', function () {
-            const image = this.files[0]
-            if (image.size < 2000000) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const allImg = imgArea.querySelectorAll('img');
-                    allImg.forEach(item => item.remove());
-                    const imgUrl = reader.result;
-                    const img = document.createElement('img');
-                    img.src = imgUrl;
-                    imgArea.appendChild(img);
-                    imgArea.classList.add('active');
-                    imgArea.dataset.img = image.name;
-                }
-                reader.readAsDataURL(image);
-            } else {
-                alert("Image size more than 2MB");
-            }
-        })
-    }
-
     const [user, setUser] = useState({
         pfp: '',
         fname: '',
         lname: '',
         email: '',
-        phone: ''
+        phone: '',
+        pw: '',
+        conf_pw: '',
     });
 
     console.log(user);
@@ -100,23 +88,20 @@ const EditUser = () => {
                 <main>
                 
                     <form action="" onSubmit={handleUpdateProfile}>
-                        <div class="container">
-                            <div class="img-area" data-img="">
-                                <i class='bx bxs-cloud-upload icon'></i>
-                                <h3>Upload Image</h3>
-                                <p>Image size must be less than <span>2MB</span></p>
-                            </div>
-                            <input type="file" id="file" accept="image/*" value={""} />
-                        </div>
+                        
                         <div class="textinfo">
-                            <label for="fName">First Name</label>
-                            <input id="fName" type="text" value={user.fname} onInput={handleChange} />
-                            <label for="name">Last Name</label>
-                            <input id="lName" type="text" value={user.lname} onChange={handleChange} />
+                            <label for="fname">First Name</label>
+                            <input id="fname" type="text" value={user.fname} onChange={handleChange} name="fname"/>
+                            <label for="lname">Last Name</label>
+                            <input id="lName" type="text" value={user.lname} onChange={handleChange} name="lname"/>
                             <label for="email">Email</label>
                             <input id="email" type="text" value={user.email} onChange={handleChange} />
                             <label for="phone">Phone Number</label>
                             <input id="phone" type="tel" value={user.phone} onChange={handleChange} />
+                            <label for="pw">Password</label>
+                            <input id="pw" type="text" value={user.pw} onInput={handleChange} />
+                            <label for="conf_pw">Confirm password</label>
+                            <input id="conf_pw" type="text" value={user.conf_pw} onInput={handleChange} />
                         </div>
 
                         <div class="CancelAndSubmit">

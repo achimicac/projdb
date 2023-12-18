@@ -25,7 +25,7 @@ app.use(express.json()); //Can read the json file that get from user register.ht
 app.use(cors(
       {
             origin: ["http://localhost:3000"],
-            methods: ["POST", "GET"],
+            methods: ["POST", "GET", "PUT", "DELETE"],
             credentials: true
       }
 ));

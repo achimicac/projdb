@@ -12,6 +12,7 @@
     "express": "^4.18.2",
     "gatsby-plugin-react-helmet": "^6.12.0",
     "jquery": "^3.7.1",
+    "json": "^11.0.0",
     "jwt-decode": "^4.0.0",
     "mobiscroll": "^3.0.0-beta6",
     "mongoose": "^8.0.3",

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import './PetInfo.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 
 const PetInfo = () => {
+    const navigate = useNavigate();
 
     const {petid} = useParams();
         function filterTable() {
@@ -89,7 +90,7 @@ const PetInfo = () => {
                                 </tr>
                                 <tr>
                                     <th>DoB :</th>
-                                    <td id="DoB">{pet.petDoB}</td>
+                                    <td id="DoB">{pet.showbd}</td>
                                 </tr>
                                 <tr>
                                     <th>Age :</th>
@@ -118,24 +119,6 @@ const PetInfo = () => {
                         </form>
                     </div>
 
-                    <table id="vaccine-table">
-                        <tr>
-                            <th>Vaccine</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td class="success" >V1</td>
-                            <td>success</td>
-                        </tr>
-                        <tr>
-                            <td class="info">V2</td>
-                            <td>info</td>
-                        </tr>
-                        <tr>
-                            <td class="ongoing">V3</td>
-                            <td> next appointment is... </td>
-                        </tr>
-                    </table>
                     {vaccines.map(vaccine => (
                         <table id="vaccine-table" key={vaccine.vacID}>
                             <tr>
@@ -148,7 +131,7 @@ const PetInfo = () => {
                                         <tr key={vaccine.vacID} className="Completed">
                                             <td>{vaccine.vacName}</td>
                                             {/*<td>{vaccine.disease}</td>*/}
-                                            <td>{vaccine.status}</td>
+                                            <td> Completeed </td>
                                         </tr>
                                     );
                                 } else if (vaccine.status === 'info') {
@@ -156,7 +139,7 @@ const PetInfo = () => {
                                         <tr key={vaccine.vacID} className="Incomplete">
                                             <td>{vaccine.vacName}</td>
                                             {/*<td>{vaccine.disease}</td>*/}
-                                            <td>{vaccine.status}</td>
+                                            <td> Incomplete </td>
                                         </tr>
                                     );
                                 } else if (vaccine.status === 'danger') {
@@ -164,7 +147,7 @@ const PetInfo = () => {
                                         <tr key={vaccine.vacID} className="ongoing">
                                             <td>{vaccine.vacName}</td>
                                             {/*<td>{vaccine.disease}</td>*/}
-                                            <td>Next appointment is...{vaccine.date}</td>
+                                            <td> Next </td>
                                         </tr>
                                     );
                                 } else {
@@ -175,7 +158,7 @@ const PetInfo = () => {
                     ))}
 
 
-                    <a href="#"><i class="fa-solid fa-book-medical fa-4x"></i></a>
+                    <a href={`/petprofile/${pets.petID}/record`}><i class="fa-solid fa-book-medical fa-4x"></i></a>
                 </div>
             </body>
             <nav className="navigate">

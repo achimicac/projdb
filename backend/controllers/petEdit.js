@@ -7,16 +7,17 @@ import jwt from 'jsonwebtoken';
 
 export const petEdit = async (req, res, next) => {
 
-      const { petName, petType, petDoB, petPfp, petGender} = req.body;
+      const { petName, petType,bd, petPfp, petGender} = req.body;
 
       try {
-            db.query('UPDATE Pet SET petName=?, petType=?, petDoB=?, petPfp=?, petGender=? WHERE petID=?', [petName, petType, petDoB, petPfp, petGender, req.params.petid], (err, result) => {
+            db.query('UPDATE Pet SET petName=?, petType=?, petDoB=?, petPfp=?, petGender=? WHERE petID=?', [petName, petType,bd, petPfp, petGender, req.params.petid], (err, result) => {
                   if (err) {
                         console.log("Can't Edit pet inform" + petName , petDoB);
                         console.log(err);
+                        res.json({error: "success", error: "Edit " + petName + " is not success"});
                   }else{
                         console.log("Edit pet inform success");
-                        res.json({status: "success", success: "User has been registered"});
+                        res.json({status: "success", success: "Edit Success"});
                   }
             })
       } catch (error) {

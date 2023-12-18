@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import '../EditPet/EditPet.css';
 import { Helmet } from 'react-helmet';
@@ -7,14 +7,15 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const EditPet = () => {
     const {petid} = useParams();
+    const inputRef = useRef();
 
     const [pet, setPet] = useState({
-        //petPfp: "",
-        petName: "",
-        petType: "",
-        petGender: "",
-        petDoB: "",
-        bd: ""
+        petPfp: '',
+        petName: '',
+        petType: '',
+        petGender: '',
+        petDoB: '',
+        bd: ''
     });
 
     const navigate = useNavigate()
@@ -49,7 +50,8 @@ const EditPet = () => {
     }*/
 
     const handleChange = (e) => {
-        setPet((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+        setPet({ ...pet, [e.target.name]: e.target.value })
+        console.log(pet)
     }
 
     useEffect(() => {
@@ -65,19 +67,26 @@ const EditPet = () => {
         fetchPetData();
     }, [petId]);
 
+
     const handleClick = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, pet); // Replace with your API endpoint
             
+            const resEdit = await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, pet); // Replace with your API endpoint
+            if (resEdit.data.status === "success") {
+                alert(resEdit.data.success);
+                navigate(`/petprofile/${petid}`)
+            } else {
+                alert(resEdit.data.error);
+            }
         } catch (error) {
             console.error(error);
             // Handle error (e.g., show an error message)
         }
     };
 
-    console.log(pet)
+    console.log(pet.petName)
 
     return (
         <div className='EditPet'>
@@ -114,16 +123,37 @@ const EditPet = () => {
                             <option value="Dog">Dog</option>
                         </select>
                         <p>Gender</p>
-                        <div class="selectGender">
-                            <div>
-                                <input id="male" type="radio" value="Male" name="petGender" onChange={handleChange} />
-                                <label for="male">Male</label>
-                            </div>
-                            <div>
-                                <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange} defaultChecked/>
-                                <label for="female">Female</label>
-                            </div>
-                        </div>
+                        
+                        {(() => {
+                                if (pet.petGender === 'Female') {
+                                    return (
+                                        <div class="selectGender">
+                                            <div>
+                                                <input id="male" type="radio" value="Male" name="petGender" onChange={handleChange} />
+                                                <label for="male">Male</label>
+                                            </div>
+                                            <div>
+                                                <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange} defaultChecked/>
+                                                <label for="female">Female</label>
+                                            </div>
+                                        </div>
+                                    );
+                                } else if (pet.petGender === 'Male') {
+                                    return (
+                                        <div class="selectGender">
+                                            <div>
+                                                <input id="male" type="radio" value="Male" name="petGender" onChange={handleChange} defaultChecked/>
+                                                <label for="male">Male</label>
+                                            </div>
+                                            <div>
+                                                <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange} />
+                                                <label for="female">Female</label>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                            })()}
+
                         <label for="DoB">Birthday:</label>
                         <input id="DoB" type="date" name="petDoB" value={pet.petbd} onChange={handleChange} />
                         <div class="CancelAndSubmit">

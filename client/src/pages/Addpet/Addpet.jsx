@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Addpet = () => {
     const navigate = useNavigate()
     const [pet, setPet] = useState({
+        petPfp: "",
         petName: "",
         petType: "",
         petGender: "",
@@ -18,7 +19,7 @@ const Addpet = () => {
     axios.defaults.withCredentials = true;
     
 
-    /*window.onload = function () {
+    window.onload = function () {
         const inputFile = document.getElementById('file');
         const imgArea = document.querySelector('.img-area');
 
@@ -42,7 +43,7 @@ const Addpet = () => {
             }
         })
         
-    }*/
+    }
 
     /*const [file, setFile] = useState();
     const handleFile = (e) => {
