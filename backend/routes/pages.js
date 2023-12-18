@@ -1,14 +1,3 @@
-/*const express = require("express");
-const loggedIn = require("../controllers/loggedIn");
-const logout = require("../controllers/logout");
-const userprofile = require("../controllers/userprofile");
-const allPet = require("../controllers/home");
-const petprofile = require("../controllers/petprofile");
-const petdelete = require("../controllers/petDelete");
-const petvaccine = require("../controllers/petvaccine");
-const calendar = require("../controllers/calendar");
-const { json } = require("body-parser");
-export const router = express.Router();*/
 import express from "express";
 import {loggedIn} from '../controllers/loggedIn.js';
 import {logout} from '../controllers/logout.js';
@@ -17,15 +6,17 @@ import {allPet} from '../controllers/home.js';
 import {petprofile} from '../controllers/petprofile.js';
 import {petdelete} from '../controllers/petDelete.js';
 import {petvaccine} from '../controllers/petvaccine.js';
-import {calendar} from '../controllers/calendar.js';
+//import {calendar} from '../controllers/calendar.js';
 import {article} from '../controllers/articles.js';
 import {appoint} from '../controllers/app.js';
 import { login } from "../controllers/login.js";
 import { petregister } from "../controllers/petregister.js";
 import { petEdit } from "../controllers/petedit.js";
 import { register } from "../controllers/register.js";
-
-//import {register, login, petregister, petEdit, petdelete, calendar, article, allPet, petprofile, petvaccine, appoint, userprofile} from "../controllers/AllMethod.js";
+import multer from 'multer';
+import {db} from '../routes/db-config.js';
+import jwt from 'jsonwebtoken';
+import { userEdit } from "../controllers/useredit.js";
 export const router = express.Router();
 
 function formatDate(dateString) {
@@ -37,132 +28,67 @@ function formatDate(dateString) {
     return `${year}-${month}-${day}`;
 }
 
-/*router.get("/", loggedIn, (req, res) => {
-    if (req.user) {
-        res.redirect('/home')
-        res.render("index", {status: "loggedIn", name: req.user.username, id: req.user.id});
-        console.log("From pages.js: " + req.user.username);
-    } else {
-        router.get('/login', login)
-        res.render("index", {status: "no", name: "nothing"});
-        console.log('Ihere');
+
+router.get("/petprofile/:petid/delete", petdelete,(req, res) => {
+    res.redirect('/home');
+})
+  
+/////////////////////////////////////////////////////////Edit with Frontend
+
+var imgconfig = multer.diskStorage({
+    destination:(req, file,callback)=>{
+        callback(null,"client/uploads/");
+    },
+    filename:(req, file,callback)=>{
+        callback(null,`image-${Date.now()}.${file.originalname}`)
     }
-});*/
+});
+
+const isImage = (req,file,cb)=>{
+    if (
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg"
+      ) {
+        cb(null, true);
+        console.log(cb)
+      }
+      cb(null, false);
+};
+
+var upload = multer({
+    storage:imgconfig,
+    fileFilter:isImage
+})
 
 router.get('/', loggedIn, (req, res) => {
     return res.json({status: "success"})
 });
 
-/*router.get("/register", (req, res) => {
-    res.sendFile("register.html", { root: "./public" });
-});*/
-
-/*router.get("/login", (req, res) => {
-    res.sendFile("login.html", { root: "./public/" });
-});*/
 router.post("/login", login);
-router.post("/register", register);
 
-/*router.get("/userprofile/:id", userprofile, (req, res, next) => {
-    try {
-        res.render("userprofile", {id: res.userdata.id, username: res.userdata.username});
-        next();
-    } catch (error) {
-        console.log(error);
-    }
-});*/
-
-/*router.get("/petregister", petregister);
-router.post("/petregister", petregister);*/
-
-/*router.get("/home", allPet, (req, res, next) => {
-    res.render("home", {all_pet: res.all_pet});
-    next();
-});*/
-
-/*router.get("/petprofile/:petid/edit", petprofile, (req, res, next) => {
-    res.render("petEdit", {pet_inform: res.pet_inform, pet_DoB: formatDate(res.pet_inform.petDoB)});
-    next();
-    const data = res.pet_inform;
-    return res.json(data);
-    next();
-});*/
-
-router.put("/petprofile/:petid/edit", petEdit, (req, res)=> {
-    res.redirect("/petprofile/:petid")
-})
-
-/*router.get("/userprofile/:id/edit", userprofile, (req, res, next) => {
-    res.render("userEdit", {user_inform: res.userdata});
-    next();
-});*/
-
-router.get("/petprofile/:petid/delete", petdelete,(req, res) => {
-    res.redirect('/home');
-})
-
-router.get("/all_events", calendar, (req, res) => {
-    // Logic to retrieve all events
-    // For example, let's say you have an array of events
-    const allEvents = res.all_event;
-  
-    res.json(allEvents); // Sending the events as JSON
-  });
-  
-
-/*router.get("/calendar", (req, res) => {
-    res.sendFile("calendar.html", {root: "./public/"}, (request, resp) => {
-        resp.send({all_event: JSON.stringify(res.all_event)})
-    });
-    res.sendFile("calendar.html", {root: "./public/", })
-    //next();
-})*/
-
-/*router.get("/userprofile/:id/petregister", (req, res, next) => {
-    console.log(req.originalUrl);
-    res.send({id: req.params.id});
-    next();
-})*/
-
-/*router.get("/userprofile/:id/petregister", (req, res, next) => {
-    res.sendFile("petregister.html", {root: "./public"});
-    console.log("From routes/pages.js/petregister");
-})*/
-
-/*app.get('/user/:uid/photos/:file', function(req, res){
-    var uid = req.params.uid
-      , file = req.params.file;
-  
-    req.user.mayViewFilesFrom(uid, function(yes){
-      if (yes) {
-        res.sendFile('/uploads/' + uid + '/' + file);
-      } else {
-        res.send(403, 'Sorry! you cant see that.');
-      }
-    });
-});*/
-
-
-/////////////////////////////////////////////////////////Edit with Frontend
-
-router.post("/register", register, (req, res) => {
-    res.redirect('/login')
+router.post("/petregister", upload.single("petPfp"), petregister, (req, res) => {
+    //console.log(`from page:  + ${req.body}`)
+    console.log("reqfile" + req.file)
+    console.log(req.body)
 });
 
+router.post('/userprofile/edit', userEdit);
 
 router.get("/articles", article, (req, res, next) => {
     const data = res.all_article;
+    console.log(data)
     return res.json(data);
 })
 
 router.get("/home", allPet, (req, res, next)=>{
     const data = res.petData;
-    return res.json(data);
+    return res.json( data);
     
 });
 
 router.get("/records", appoint, (req, res, next) => {
-    const data = res
+    
 } )
 
 router.get("/petprofile/:petid", petprofile, (req, res) => {
@@ -175,19 +101,40 @@ router.get("/petprofile/:petid/vaccine", petvaccine, (req, res, next) => {
     return res.json(data);
 })
 
-router.get("/calendar", calendar,  (res, req) => {
+
+const calendar = (req, res, next) => {
+    const userRegisteredCookie = req.cookies.userRegistered;
+    const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
+    //const {date} = req.body;
+    db.query( 'SELECT * FROM Pet INNER JOIN Appointment ON Pet.petID = Appointment.petID WHERE id = ? AND date IS NOT NULL', [27], (error, results) => {
+          res.all_event = results;
+          return next()
+          //console.log(res.all_event)
+    })
+}
+
+router.get("/calendar", calendar, (res, req, next) => {
     const data = res.all_event;
-    return res.json(data)                                                                                              
+    console.log("/calendar" + "\n" + data)
+    try{
+        return res.json(data);
+    }catch{
+        console.log("/calen error")
+    }                                                                                            
 })
 
 router.put("/appointment/:appid", appoint)
 
-router.get("/profile", userprofile, (req, res) => {
+router.get("/userprofile", userprofile, (req, res) => {
     const data = res.userdata
-    return res.json(data);
+    res.json(data);
 })
 
+router.post("/register", register, (req, res) => {
+    res.redirect('/login')
+})
 
+router.put("/petprofile/:petid/edit", petEdit)
 
 router.get("/logout", logout);
 

@@ -7,8 +7,9 @@ import { Link, useParams } from "react-router-dom";
 
 
 const PetInfo = () => {
+
     const {petid} = useParams();
-    function filterTable() {
+        function filterTable() {
         /*const dropdown = document.querySelector("#status");
         let selectValue = dropdown.value;
         const table = document.querySelector("#vaccine-table");
@@ -31,6 +32,8 @@ const PetInfo = () => {
     // State for the second set of data
     const [pets, setPet] = useState([]);
     const [vaccines, setVaccine] = useState([]);
+
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         // Fetch data from the first path
@@ -58,6 +61,7 @@ const PetInfo = () => {
         fetchPet();
         fetchVaccine();
     }, []);
+
 
     return (
         <div className="petInfo">
@@ -93,7 +97,7 @@ const PetInfo = () => {
                                 </tr>
                             </table>
                         </div>
-                        <a href="/petprofile/:petid/edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href={`/petprofile/${pet.petID}/edit`}><i class="fa-solid fa-pen-to-square"></i></a>
                     </div>
 
                 ))}

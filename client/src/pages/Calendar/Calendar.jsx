@@ -17,6 +17,7 @@ const Calendar = () => {
     });
 
     const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -39,7 +40,7 @@ const Calendar = () => {
 
         try {
             const updatedAppointment = { ...appointment, status: !appointment.status ? '' : 'completed' };
-            await axios.put(`http://localhost:3009/calendar `, appointment); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/appointment `, appointment); // Replace with your API endpoint
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -50,7 +51,7 @@ const Calendar = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/appoint`, appointment); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/appointment`, appointment); // Replace with your API endpoint
             navigate("/calendar")
         } catch (error) {
             console.error(error);

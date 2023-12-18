@@ -2,44 +2,39 @@ import React, { useState, useEffect } from 'react';
 import './EditUser.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const EditUser = () => {
-    const [user, setUser] = useState({
-        pfp: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: ''
-    });
+    const { petid } = useParams();
 
     const navigate = useNavigate()
     const location = useLocation()
+    axios.defaults.withCredentials = true;
 
-    const userId = location.pathname.split("/")[2]
+    //const userId = location.pathname.split("/")[2]
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/home`); // Replace with your API endpoint
-                setUser(response.data);
+                const response = await axios.get(`http://localhost:3009/userprofile`); // Replace with your API endpoint
+                setUser(response.data[0]);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
         };
 
         fetchUserData();
-    }, [userId]);
+    });
 
-    const handleChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+    const handleChange =  (e) => {
+         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/users/${userId}`, user); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/userprofile/edit`, user); // Replace with your API endpoint
             navigate("/profile")
         } catch (error) {
             console.error(error);
@@ -75,6 +70,16 @@ const EditUser = () => {
         })
     }
 
+    const [user, setUser] = useState({
+        pfp: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: ''
+    });
+
+    console.log(user);
+
     return (
         <div className="EditUser">
             <Helmet>
@@ -93,6 +98,7 @@ const EditUser = () => {
                 </div>
 
                 <main>
+                
                     <form action="" onSubmit={handleUpdateProfile}>
                         <div class="container">
                             <div class="img-area" data-img="">
@@ -100,11 +106,11 @@ const EditUser = () => {
                                 <h3>Upload Image</h3>
                                 <p>Image size must be less than <span>2MB</span></p>
                             </div>
-                            <input type="file" id="file" accept="image/*" value={user.pfp} />
+                            <input type="file" id="file" accept="image/*" value={""} />
                         </div>
                         <div class="textinfo">
                             <label for="fName">First Name</label>
-                            <input id="fName" type="text" value={user.fname} onChange={handleChange} />
+                            <input id="fName" type="text" value={user.fname} onInput={handleChange} />
                             <label for="name">Last Name</label>
                             <input id="lName" type="text" value={user.lname} onChange={handleChange} />
                             <label for="email">Email</label>
@@ -119,6 +125,7 @@ const EditUser = () => {
                         </div>
 
                     </form>
+            
                 </main>
                 <nav class="navigate">
                     <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>

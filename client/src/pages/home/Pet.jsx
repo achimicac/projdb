@@ -5,15 +5,14 @@ import { Helmet } from 'react-helmet';
 import logoDog from './logodog.png';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-
 const Pet = () => {
     const navigate = useNavigate();
 
     const [auth, setAuth] = useState(false);
     const [pets, setPet] = useState([]);
-    const [pic, setPic] = useState([]);
 
     axios.defaults.withCredentials = true;
+
 
     useEffect(()=>{
         
@@ -23,7 +22,6 @@ const Pet = () => {
                 navigate('/login')
             } else {
                 setAuth(false)
-                navigate('/home')
             }
         })
 
@@ -35,26 +33,10 @@ const Pet = () => {
                 console.log(err);
             }
         }
-        const fetchPetPfp = async () => {
-            try {
-                const response = await axios.get('http://localhost:3009/pic');
-                setPic(response.data);
-            } catch (error) {
-                console.error('Error fetching pet data:', error);
-            }
-        };
-
-        fetchPetPfp();
         fetchAllPets();
     }, []);
 
-    const handleDelete = async () => {
-        axios.get('http://localhost:3009/logout')
-        .then(res => {
-            window.location.reload(true);
-        })
-    }
-    
+
     return (
         <div className="home">
             <Helmet>
@@ -69,8 +51,9 @@ const Pet = () => {
             <header>
                 <img src={logoDog} alt="Logo" />
                 <nav className="Profile">
+
+                    <a className="user"><i className="fa-solid fa-user fa-2x"></i></a>
                     
-                    <a href="/userprofile" className="user"><i className="fa-solid fa-user fa-2x"></i></a>
                 </nav>
             </header>
             <main>
@@ -79,7 +62,8 @@ const Pet = () => {
                         <figure className='pet' key={pet.petID}>
                             <Link to={`/petprofile/${pet.petID}`} style={{ textDecoration: 'none' }}>
 
-                                {pet.id && <img src={pet.petpic} alt="" />}
+                                {pet.id && <img src={`http://localhost:3009/${pet.petPfp}`} />}
+                                
                                 <figcaption>{pet.petName}</figcaption>
                             </Link>
                         </figure>
@@ -97,7 +81,7 @@ const Pet = () => {
                             <figcaption>BBBB</figcaption>
                     </figure>
                     <div class="addpet">
-                        <a href="#"><Link to="/login" onClick={handleDelete}><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                        <a href="#"><Link to=""><i class="fa-solid fa-plus fa-4x"></i></Link></a>
                     </div>
                 </div>
             </main>

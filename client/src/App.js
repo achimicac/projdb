@@ -1,4 +1,4 @@
-import { render } from "react-dom";
+
 import {
   BrowserRouter,
   Routes,
@@ -11,17 +11,12 @@ import PetInfo from "./pages/PetInfo/PetInfo"
 import Calendar from "./pages/Calendar/Calendar";
 import Login from "./pages/login/Login"
 import Register from "./pages/Register/Register"
-import jwt from 'jwt-decode';
-import { useState, useEffect } from "react";
-import axios from 'axios';
 import Profile from "./pages/userprof/Profile";
 import Addpet from "./pages/Addpet/Addpet";
 import Records from "./pages/Record/Record";
-import Cookies from "universal-cookie";
+import EditUser from "./pages/EditUser/EditUser";
 
 function App() {
-  const cookies = new Cookies();
-  const [user, setUser] = useState(null);
 
   return (
       <BrowserRouter>
@@ -37,9 +32,10 @@ function App() {
                 <Route path="/petprofile/:petid/vaccine" element={<PetInfo />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/userprofile" element={<Profile />} />
                 <Route path="/appointment/:appid" element={<Calendar />} />
                 <Route path="/records" element={<Records />} />
+                <Route path="/userprofile/edit" element={<EditUser />} />
         </Routes>
     </BrowserRouter>
   );

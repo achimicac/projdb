@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 const Records = () => {
     const [records, setRecords] = useState([]);
 
+    axios.defaults.withCredentials = true;
+
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {

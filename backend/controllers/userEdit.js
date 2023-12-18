@@ -11,7 +11,7 @@ export const userEdit = async (req, res, next) => {
       const id = jwt.decode(req.cookies.userRegistered, process.env.JWT_SECRET).id;
 
       try {
-            db.query('UPDATE User SET username=?, fname=?, lname=?, email=?, phone=?, pfp=? WHERE id=?', [username, fname, lname, email, phone, pfp, id], (err, result) => {
+            db.query('UPDATE User SET username=?, fname=?, lname=?, email=?, phone=?, pfp=? WHERE id=?', [username, fname, lname, email, phone, pfp, decodedToken.id], (err, result) => {
                   if (err) {
                         console.log("Can't Edit user inform");
                         console.log(err);

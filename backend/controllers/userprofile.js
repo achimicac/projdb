@@ -7,8 +7,11 @@ import jwt from 'jsonwebtoken';
 //ว่าจะมาทำcheck เพิ่มว่าถ้าไม่ใช่เจ้าของsccountให้มันrenderหน้าอื่น
 
 export const userprofile = async (req, res, next) => {
+      const userRegisteredCookie = req.cookies.userRegistered;
+      const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
+
       try {
-            db.query('SELECT * FROM User WHERE id = ?', [27], (err, result) => {
+            db.query('SELECT * FROM User WHERE id = ?', [decodedToken.id], (err, result) => {
                   if (err) {
                         return console.log("Can't found this user");
                   }else{
@@ -17,7 +20,7 @@ export const userprofile = async (req, res, next) => {
                         const picdata = row.pfp;
                         const buf = new Buffer(picdata, "binary");
                         fs.writeFileSync(outputfile, buf);*/
-                        return res.userdata = result;
+                        res.userdata = result;
                         //res.pic = outputfile
                         next();
                   }

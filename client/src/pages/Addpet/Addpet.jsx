@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import '../Addpet/styleaddpet.css';
 import { Helmet } from 'react-helmet';
@@ -7,8 +7,18 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Addpet = () => {
     const navigate = useNavigate()
+    const [pet, setPet] = useState({
+        petName: "",
+        petType: "",
+        petGender: "",
+        petDoB:""
+    });
 
-    window.onload = function () {
+    const [file, setFile] = useState(null)
+    axios.defaults.withCredentials = true;
+    
+
+    /*window.onload = function () {
         const inputFile = document.getElementById('file');
         const imgArea = document.querySelector('.img-area');
 
@@ -32,30 +42,61 @@ const Addpet = () => {
             }
         })
         
+    }*/
+
+    /*const [file, setFile] = useState();
+    const handleFile = (e) => {
+        setFile(e.target.file[0])
     }
-    
-    const [pet, setPet] = useState({
-        petPfp:"",
-        petName: "",
-        petType: "",
-        petGender: "",
-        petDoB:""
-    });
+    const handleUPload = () => {
+        const formdata = new FormData();
+        formdata.append('image', file)
+        axios.post('httpd://localhost:3009/upload')
+        .then(res => {
+            if(res.data.Status === "success"){
+                console.log("Add image Success")
+            } else {
+                console.log("Add image Failed")
+            }
+        })
+        .catch(err => {console.log(err)})
+    }*/
+
+    const setimgfile = (e) => {
+        console.log(e.target.files[0])
+        setFile(e.target.files[0])
+    }
+    console.log(file)
 
     const handleChange = (e) => {
         setPet((prev) => ({ ...prev, [e.target.name]: e.target.value}))
     }
 
-    const handleClick = async e => {
-        if (!pet.petName || !pet.petType || !pet.petGender || !pet.petDoB) {
-            alert("Please fill in all required fields");
-            return;
-        }
-
+    const handleSubmit = async (e) => {
         e.preventDefault()
+
+        const formData = new FormData();
+        formData.append("petPfp", file);
+        formData.append("petName", pet.petName);
+        formData.append("petType", pet.petType);
+        formData.append("petGender", pet.petGender);
+        formData.append("petDoB", pet.petDoB)
+
+        const config = {
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        }
         try{
-            await axios.post("http://localhost:3009/petregister", pet) //ใส่หน้าในนี้ด้วยเด้อ
-            navigate("/home")
+            console.log("formdata" + URL.createObjectURL([...formData][0]))
+            const respet = await axios.post("http://localhost:3009/petregister", formData, config) //ใส่หน้าในนี้ด้วยเด้อ
+            if(respet.data.status === "error"){
+                alert(respet.data.error)
+            }
+            else{
+                alert(respet.data.success)
+                navigate('/home')
+            }
         }
         catch(err){console.error(err)}
     }
@@ -72,17 +113,17 @@ const Addpet = () => {
             <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
         </Helmet>
         <div class="back">
-                <a href="#"><Link to='/home'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
+                <a href="/home"><Link to='/home'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
         </div>
         <main>
-            <form action="">
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div class="container">
                     <div class="img-area" data-img="">
                         <i class='bx bxs-cloud-upload icon'></i>
                         <h3>Upload Image</h3>
                         <p>Image size must be less than <span>2MB</span></p>
                     </div>
-                    <input type="file" id="file" accept="image/*" name="petPfp"/>
+                    <input type="file" id="file" name="petPfp" onChange={setimgfile} multiple={false}/>
                 </div>
 
                 <div class="textinfo">
@@ -90,8 +131,9 @@ const Addpet = () => {
                     <input id="name" type="text" placeholder="Name" name="petName" onChange={handleChange} />
                     <label for="type">Type</label>
                     <select id="type" name="petType" onChange={handleChange}>
-                        <option value="Cat">Cat</option>
+                        <option value="None">None</option>
                         <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
                     </select>
                     <p>Gender</p>
                     <div class="selectGender">
@@ -104,20 +146,21 @@ const Addpet = () => {
                             <label for="female">Female</label>
                         </div>
                     </div>
+
                     <label for="DoB">Birthday:</label>
                     <input id="DoB" type="date" name="petDoB" onChange={handleChange}/>
                     <div class="CancelAndSubmit">
                         <button id="cancel" class="button">Cancel</button>
-                        <button id="submit" class="button" type="submit" name="submit" onClick={handleClick}>Submit</button>
+                        <button id="submit" className="button" type="submit" name="submit" onClick={handleSubmit} variant="primary">Submit</button>
                     </div>
                 </div>
             </form>
         </main>
 
         <nav class="navigate">
-            <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-            <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
-            <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
+            <Link to="/articles"><a href="/articles"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
+            <Link to="/home"><a href="/home"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+            <Link to="/calendar"><a href="/calendar"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
         </nav>
         </div>
     )

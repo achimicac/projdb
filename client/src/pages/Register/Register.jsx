@@ -64,6 +64,8 @@ const Register = () => {
         });
     };
 
+    console.log(formData);
+
     return (
         <div className="Register">
             <Helmet>

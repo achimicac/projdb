@@ -3,23 +3,27 @@ import { useState } from 'react';
 import '../EditPet/EditPet.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const EditPet = () => {
+    const {petid} = useParams();
+
     const [pet, setPet] = useState({
-        petPfp: "",
+        //petPfp: "",
         petName: "",
         petType: "",
         petGender: "",
-        petDoB: ""
+        petDoB: "",
+        bd: ""
     });
 
     const navigate = useNavigate()
     const location = useLocation()
+    axios.defaults.withCredentials = true;
 
     const petId = location.pathname.split("/")[2]
 
-    window.onload = function () {
+    /*window.onload = function () {
         const inputFile = document.getElementById('file');
         const imgArea = document.querySelector('.img-area');
 
@@ -42,7 +46,7 @@ const EditPet = () => {
                 alert("Image size more than 2MB");
             }
         })
-    }
+    }*/
 
     const handleChange = (e) => {
         setPet((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -51,8 +55,8 @@ const EditPet = () => {
     useEffect(() => {
         const fetchPetData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/petprofile/27`); // Replace with your API endpoint
-                setPet(response.data);
+                const response = await axios.get(`http://localhost:3009/petprofile/${petid}`); // Replace with your API endpoint
+                setPet(response.data[0]);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -65,13 +69,15 @@ const EditPet = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/petprofile/27/edit`, pet); // Replace with your API endpoint
-            navigate(`/petprofile/27`)
+            await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, pet); // Replace with your API endpoint
+            
         } catch (error) {
             console.error(error);
             // Handle error (e.g., show an error message)
         }
     };
+
+    console.log(pet)
 
     return (
         <div className='EditPet'>
@@ -85,7 +91,7 @@ const EditPet = () => {
                 <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
             </Helmet>
             <div class="back">
-                <a href="#"><Link to='/pet-info'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
+                <a href="#"><Link to={`/petprofile/${pet.petID}`}><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
             </div>
             <main>
                 <form action="" onSubmit={handleClick}>
@@ -95,17 +101,17 @@ const EditPet = () => {
                             <h3>Upload Image</h3>
                             <p>Image size must be less than <span>2MB</span></p>
                         </div>
-                        <input type="file" id="file" accept="image/*" value={pet.petPfp} />
+                        <input type="file" id="file" accept="image/*" value={""} />
                     </div>
-
+                
                     <div class="textinfo">
                         <label for="name">Name</label>
                         <input id="name" type="text" placeholder="Name" name="petName" value={pet.petName} onChange={handleChange} />
                         <label for="type">Type</label>
                         <select id="type" name="petType" value={pet.petType} onChange={handleChange}>
+                            <option value="Gender" disabled>Gender</option>
                             <option value="Cat">Cat</option>
                             <option value="Dog">Dog</option>
-                            <option value="Rabbit">Rabbit</option>
                         </select>
                         <p>Gender</p>
                         <div class="selectGender">
@@ -114,14 +120,14 @@ const EditPet = () => {
                                 <label for="male">Male</label>
                             </div>
                             <div>
-                                <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange} />
+                                <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange} defaultChecked/>
                                 <label for="female">Female</label>
                             </div>
                         </div>
                         <label for="DoB">Birthday:</label>
-                        <input id="DoB" type="date" name="petDoB" value={pet.petDoB} onChange={handleChange} />
+                        <input id="DoB" type="date" name="petDoB" value={pet.petbd} onChange={handleChange} />
                         <div class="CancelAndSubmit">
-                            <Link to="/pet-info"><button id="cancel" class="button">Cancel</button></Link>
+                            <Link to={`/petprofile/${petid}`}><button id="cancel" class="button">Cancel</button></Link>
                             <button id="submit" class="button" type="submit" name="submit" onClick={handleClick}>Submit</button>
                         </div>
                     </div>

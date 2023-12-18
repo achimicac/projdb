@@ -8,10 +8,12 @@ const Profile = () => {
     const [profile, setProfile] = useState([]);
     const navigate = useNavigate();
 
+    axios.defaults.withCredentials = true;
+
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await axios.get("http://localhost:3009/profile");
+                const res = await axios.get("http://localhost:3009/userprofile");
                 setProfile(res.data);
             } catch (err) {
                 console.log(err);
@@ -20,9 +22,16 @@ const Profile = () => {
         fetchUserProfile();
     }, []);
 
-    const handleLogout = () => {
-        navigate('/login');
-    };
+    const handleLogout = async () => {
+        axios.get('http://localhost:3009/logout')
+        .then(res => {
+            window.location.reload(true);
+        })
+    }
+
+    const handleEdit = async () => {
+        navigate('/userprofile/edit')
+    }
 
 
     return (
@@ -70,6 +79,8 @@ const Profile = () => {
                         </tr>
                     </table>
                     <button id="logout" role="button" onClick={handleLogout}>Log out</button>
+                    <button id="logout" role="button" onClick={handleEdit}>Edit</button>
+                    
                 </div>
 
                 ))}

@@ -7,25 +7,17 @@ import { Link } from "react-router-dom";
 
 const Articles = () => {
     const [articles, setArticles] = useState([]);
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const fetchAllArticles = async () => {
             try {
-                const res = await axios.get('api/articles');
+                const res = await axios.get('http://localhost:3009/articles');
                 setArticles(res.data);
             } catch (err) {
                 console.log(err);
             }
         }
-        const fetchAllArticlesPics = async () => {
-            try {
-                const res = await axios.get("http://localhost:3009/articles/pics");
-                setArticles(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        fetchAllArticlesPics();
         fetchAllArticles();
     }, []);
 
