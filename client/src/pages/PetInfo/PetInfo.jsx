@@ -42,7 +42,7 @@ const PetInfo = () => {
             try {
                 const response = await axios.get(`http://localhost:3009/petprofile/${petid}`);
                 
-                setPet(response.data);
+                setPet(response.data[0]);
             } catch (error) {
                 console.error('Error fetching pet data:', error);
             }
@@ -62,6 +62,8 @@ const PetInfo = () => {
         fetchPet();
         fetchVaccine();
     }, []);
+    console.log(pets)
+    
 
 
     return (
@@ -77,31 +79,31 @@ const PetInfo = () => {
             </Helmet>
             
             <body>
-                {pets.map(pet => (
+                
 
-                    <div className="Tnfo" key={pet.petID}>
-                        {pet.petID && <img src={pet.petpfp} />}
+                    <div className="Tnfo" key={pets.petID}>
+                        {pets.petID && <img src={pets.petPfpUrl} />}
                         <div class="text">
-                            <h1>{pet.petName}</h1>
+                            <h1>{pets.petName}</h1>
                             <table>
                                 <tr>
                                     <th>Type :</th>
-                                    <td id="Type">{pet.petType}</td>
+                                    <td id="Type">{pets.petType}</td>
                                 </tr>
                                 <tr>
                                     <th>DoB :</th>
-                                    <td id="DoB">{pet.showbd}</td>
+                                    <td id="DoB">{pets.showbd}</td>
                                 </tr>
                                 <tr>
                                     <th>Age :</th>
-                                    <td id="Age">{pet.petAge}</td>
+                                    <td id="Age">{pets.petAge}</td>
                                 </tr>
                             </table>
                         </div>
-                        <a href={`/petprofile/${pet.petID}/edit`}><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href={`/petprofile/${pets.petID}/edit`}><i class="fa-solid fa-pen-to-square"></i></a>
                     </div>
 
-                ))}
+                
 
                 <div class="vaccinelist">
 
