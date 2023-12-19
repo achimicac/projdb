@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const procSchema = new Schema({
@@ -31,5 +31,4 @@ const procSchema = new Schema({
     }
 });
 
-const Procedural = mongoose.model('Procedural', procSchema);
-module.exports = Procedural;
+export const Procedural = mongoose.model('Procedural', procSchema);
