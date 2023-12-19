@@ -52,7 +52,7 @@ const Pet = () => {
                 <img src={logoDog} alt="Logo" />
                 <nav className="Profile">
 
-                    <a className="user"><i className="fa-solid fa-user fa-2x"></i></a>
+                    <Link to="/userprofile"><a className="user" href="#"><i className="fa-solid fa-user fa-2x"></i></a></Link>
                     
                 </nav>
             </header>
@@ -85,11 +85,13 @@ const Pet = () => {
                     </div>
                 </div>
             </main>
+            
             <nav className="navigate">
                 <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
                 <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
                 <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
             </nav>
+
         </div>
     )
 }

@@ -32,8 +32,10 @@
 }
 
 .home .Profile i{
-    padding-left: 30px;
     color: rgb(73, 61, 51);;
+    background-color: white;
+    padding: 10px 12px;
+    border-radius: 30px;
 }
 
 .home .Pet{
@@ -112,6 +114,7 @@
     grid-template-columns: 1fr 1fr 1fr ;
     text-align: center;
 }
+
 
 
 @media screen and (min-width: 680px) { 
