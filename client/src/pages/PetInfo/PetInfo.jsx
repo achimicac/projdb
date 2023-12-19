@@ -110,13 +110,10 @@ const PetInfo = () => {
                     <div class="HeaderVacc">
                         <h2>Vaccination</h2>
                         <form action="">
-                            <div class="select" onChange={filterTable()}>
-                                <select id="status" >
-                                    <option value="all">All</option>
-                                    <option value="info">info</option>
-                                    <option value="success">success</option>
-                                    <option value="danger">danger</option>
-                                </select>
+                            <div class="select" >
+                                /////////////////////////////////
+                                <button href={`/petprofile/${pets.petID}/record`}><i class="fa-solid fa-book-medical fa-4x"></i></a>
+                                /////////////////////////////
                             </div>
                         </form>
                     </div>

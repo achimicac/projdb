@@ -83,7 +83,7 @@ const Pet = () => {
                             <figcaption>BBBB</figcaption>
                     </figure>
                     <div class="addpet">
-                        <a href="#"><Link to=""><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                        <a href="#"><Link to="/petregister"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
                     </div>
                 </div>
             </main>
