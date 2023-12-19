@@ -76,6 +76,11 @@ const Calendar = () => {
                 <h1>Today Checklist</h1>
             </header>
 
+            <div class = "filter">
+                <p>Choose month</p>
+                <input type = 'month'></input>
+            </div>
+
             <main>
                 {showapp.map(app => (
                     <div className='container'>
