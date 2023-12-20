@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 export const petprofile = async (req, res, next) => {
       console.log("req.params" + req.params.petid)
       try {
-            db.query("SELECT *, DATE_FORMAT(petDoB, '%d %M %Y') bd, DATE_FORMAT(petDoB, '%e %M %Y') showbd FROM Pet WHERE petID = ?", [req.params.petid], (err, result) => {
+            db.query("SELECT *, DATE_FORMAT(petDoB, '%d %M %Y') bd, FLOOR(TIMESTAMPDIFF(WEEK, petDoB, CURDATE()) / 52) AS years, FLOOR(MOD(TIMESTAMPDIFF(MONTH, petDoB, CURDATE()), 12)) AS months, FLOOR(MOD(TIMESTAMPDIFF(DAY, petDoB, CURDATE()), 30) / 7) AS weeks FROM Pet WHERE petID = ?", [req.params.petid], (err, result) => {
                   if (err) {
                         return console.log("Can't found this user");
                   }else{

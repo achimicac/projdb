@@ -1,4 +1,4 @@
-import Pet from '../models/pet';  // Assuming you have a Pet model
+import {Pet} from '../models/pet.js';  // Assuming you have a Pet model
 
 export const petDelete = async (req, res, next) => {
     try {

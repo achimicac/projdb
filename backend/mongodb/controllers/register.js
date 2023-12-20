@@ -1,5 +1,6 @@
-import User from '../models/user';  // Assuming you have a User model
+import {User} from '../models/user.js';  // Assuming you have a User model
 import bcrypt from 'bcrypt';
+const saltRounds = 10;
 
 export const register = async (req, res) => {
     const { username, pw, fname, lname, email, phone, pfp } = req.body;

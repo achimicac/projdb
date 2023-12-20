@@ -190,8 +190,8 @@ const EditPet = () => {
                                     );
                                 }
                             })()}
-    
-                        <label for="DoB" name="petDoB" onChange={handleChange}>Birthday: {pet.bd}</label>
+
+                        <label for="DoB" name="petDoB" onChange={handleChange}>Birthday: </label>
                         <input id="DoB" type="date" name="petDoB" value={pet.petDoB} onChange={handleChange} />
                         <div class="CancelAndSubmit">
                             <Link to={`/petprofile/${petid}`}><button id="cancel" class="button">Cancel</button></Link>

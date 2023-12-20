@@ -1,26 +1,31 @@
-import Pet from '../models/pet';  // Assuming you have a Pet model
+import {Pet} from '../models/pet.js';  // Assuming you have a Pet model
+import jwt from 'jsonwebtoken';
 
 export const allPet = async (req, res, next) => {
     const userRegisteredCookie = req.cookies.userRegistered;
     const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
 
     try {
-        const petData = await Pet.find({ ownerID: decodedToken.id })
+        const petData = await Pet.find({ id: decodedToken.id })
             .select('petPfp petName petType petDoB petGender') // Include only relevant fields
             .lean(); // Convert Mongoose documents to plain JavaScript objects
-
+            console.log(petData[0])
         if (petData.length === 0) {
             console.log("Can't find this user");
             return res.status(404).send("Can't find this user");
         } else {
-            res.petData = petData.map((pet) => ({
+            const profile_image = petData.profile_image ? petData.petPfp.data.toString('base64') : null;
+            res.petData = petData.map((pet) => (
+                {
                 ...pet,
                 years: calculateYears(pet.petDoB),
                 months: calculateMonths(pet.petDoB),
                 weeks: calculateWeeks(pet.petDoB),
                 days: calculateDays(pet.petDoB),
                 petPfp: encodePetPfp(pet.petPfp),
+                petPfpUrl: profile_image
             }));
+
             return next();
         }
     } catch (error) {

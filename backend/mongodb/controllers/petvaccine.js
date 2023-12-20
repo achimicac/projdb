@@ -1,7 +1,7 @@
-import Pet from '../models/pet';        // Assuming you have a Pet model
-import Appointment from '../models/appointment';  // Assuming you have an Appointment model
-import Procedure from '../models/procedural';    // Assuming you have a Procedural model
-import Vaccine from '../models/vaccine';          // Assuming you have a Vaccine model
+import {Pet} from '../models/pet.js';        // Assuming you have a Pet model
+import {Appointment} from '../models/appointment.js';  // Assuming you have an Appointment model
+import {Procedural} from '../models/procedural.js';    // Assuming you have a Procedural model
+import {Vaccine} from '../models/vaccine.js';          // Assuming you have a Vaccine model
 
 export const petVaccine = async (req, res, next) => {
     try {

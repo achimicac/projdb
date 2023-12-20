@@ -17,6 +17,7 @@ import multer from 'multer';
 import {db} from '../routes/db-config.js';
 import jwt from 'jsonwebtoken';
 import { userEdit } from "../controllers/useredit.js";
+import {petrecord} from '../controllers/petrecord.js'
 export const router = express.Router();
 
 function formatDate(dateString) {
@@ -118,9 +119,9 @@ const calendar = (req, res, next) => {
 
 router.get("/calendar", calendar, (res, req, next) => {
     const data = res.all_event;
-    console.log("/calendar" + "\n" + data)
+    //console.log("/calendar" + "\n" + data)
     try{
-        return res.json(data);
+        res.json(data);
     }catch{
         console.log("/calen error")
     }                                                                                            
@@ -138,6 +139,13 @@ router.post("/register", register, (req, res) => {
 })
 
 router.put("/petprofile/:petid/edit", upload.single("petPfp"), petEdit)
+
+router.put("/petprofile/:petid/delete", upload.single("petPfp"), petdelete)
+
+router.get("/petprofile/:petid/record", petrecord, (req, res) => {
+    let data = res.allrec;
+    return res.json(data);
+})
 
 router.get("/logout", logout);
 

@@ -1,4 +1,4 @@
-import User from '../models/user';  // Assuming you have a User model
+import { User } from '../models/user.js';  // Assuming you have a User model
 import jwt from 'jsonwebtoken';
 
 export const userEdit = async (req, res, next) => {

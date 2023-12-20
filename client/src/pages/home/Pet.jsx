@@ -36,7 +36,7 @@ const Pet = () => {
         fetchAllPets();
     }, []);
 
-
+    console.log(pets)
 
 
     return (

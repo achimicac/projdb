@@ -3,9 +3,13 @@ import { useState } from 'react';
 import './Record.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Records = () => {
+    const navigate = useNavigate();
+
+    const { petid } = useParams();
+
     const [records, setRecords] = useState([]);
 
     axios.defaults.withCredentials = true;
@@ -13,7 +17,7 @@ const Records = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const res = await axios.get("http://localhost:3009/records");
+                const res = await axios.get(`http://localhost:3009/petprofile/${petid}/record`);
                 setRecords(res.data);
             } catch (err) {
                 console.log(err);
@@ -21,6 +25,7 @@ const Records = () => {
         }
         fetchAllRecords();
     }, []);
+    console.log(records)
 
     return (
         <div className="Records">
@@ -37,37 +42,26 @@ const Records = () => {
             <body>
                 <header>
                     <div class="back">
-                        <Link to="/petprofile/:27"></Link><a href="#"><i class="fa-solid fa-chevron-left fa-3x"></i></a>
+                        <Link to="/petprofile/:id"></Link><a href="#"><i class="fa-solid fa-chevron-left fa-3x"></i></a>
                     </div>
-                    <h1>{records.petName}'s record</h1>
+                    <h1>{records.length > 0 && records[0].petName}'s record</h1>
                 </header>
 
                 <main>
-                    {records.map(record => (
+                {records.length > 0 && records.map(record => (
+                    <div className="record" key={record.appID}>
+                        <h2>{record.procName}</h2>
+                        <p>{record.vacName}</p>
+                        <p>{record.appdate}</p>
+                    </div>
+                ))}
 
-                        <div className="record" key={record.appID}>
-                            {record.petID && <h2>{record.procName}</h2>}
-                            <p>{record.date}</p>
-                        </div>
-
-                    ))}
-                    <div class="record">
-                        <h2>Article</h2>
-                        <p>12/03/2023</p>
-                    </div>
-                    <div class="record">
-                        <h2>Article</h2>
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis aliquid nam ipsa fugit ab. Eos est reiciendis quae possimus velit ipsum unde! Alias praesentium magnam culpa adipisci reiciendis modi nisi!</p>
-                    </div>
-                    <div class="record">
-                        <h2>Article</h2>
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis aliquid nam ipsa fugit ab. Eos est reiciendis quae possimus velit ipsum unde! Alias praesentium magnam culpa adipisci reiciendis modi nisi!</p>
-                    </div>
+                    
                 </main>
 
                 <nav class="navigate">
                     <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
-                    <Link to="/"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
+                    <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
                     <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
                 </nav>
             </body>

@@ -1,63 +1,103 @@
-/*const db = require("../routes/db-config.js");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");*/
-import {db} from '../routes/db-config.js';
-import multer from 'multer';
+import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/petsDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// Define a MongoDB schema for Pet
+const petSchema = new mongoose.Schema({
+  petName: String,
+  petType: String,
+  petDoB: Date,
+  petPfp: Buffer,
+  petGender: String,
+  ownerId: mongoose.Schema.Types.ObjectId,
+});
+
+// Define a MongoDB model for Pet
+const Pet = mongoose.model('Pet', petSchema);
+
 export const petregister = async (req, res) => {
-      const userRegisteredCookie = req.cookies.userRegistered;
-      const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
+  const userRegisteredCookie = req.cookies.userRegistered;
+  const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
 
-      const { petName, petType, petDoB, petGender, petPfp } = req.body;
-      const binaryData = Buffer.from(petPfp.dataUrl.split(',')[1], 'base64'); 
-      
-      try {
-      if(!petName || !petType || !petDoB || !petPfp || !petGender || !petPfp) return res.json({
-            status: "error",
-            error: "Please enter all your pet information"
-      })
-      else {
-            console.log("From control/petregister: " + " : " + petName + "\n" + petDoB + "\n" + petGender + "\n" + binaryData + "\n" + petType);
-            //Check ว่าเคยลงไปยัง พวกstatus กับ error successเชื่อมอยู่กับหน้าregister.jsในpublicนะ
-            db.query('SELECT * FROM Pet WHERE id = ? and petName = ?', [decodedToken.id, petName], async (err, result) => {
-                  //console.log("from db: " + result[0].username + " " + result[0].email);
-                  console.log("from db: " + result[0]);
-                  if (err) throw err;
-                  if (result[0]) {
-                        return res.json({status: "error", error: petName + " has already been registered."});
-                                          }
-                  else {
+  const { petName, petType, petDoB, petGender, petPfp } = req.body;
+  const binaryData = Buffer.from(petPfp.dataUrl.split(',')[1], 'base64');
 
-                        db.query('INSERT INTO Pet SET ?', {petName: petName, petType:petType, petDoB: petDoB, petPfp: binaryData, petGender: petGender, id: decodedToken.id}, (error, results) => {
-                              if (error) throw error;
-                              res.json({status: "success", success: "your pet is ready!"});
+  try {
+    if (!petName || !petType || !petDoB || !petPfp || !petGender || !petPfp) {
+      return res.json({
+        status: 'error',
+        error: 'Please enter all your pet information',
+      });
+    } else {
+      const existingPet = await Pet.findOne({ ownerId: decodedToken.id, petName: petName });
+      if (existingPet) {
+        return res.json({ status: 'error', error: `${petName} has already been registered.` });
+      } else {
+        const newPet = new Pet({
+          petName: petName,
+          petType: petType,
+          petDoB: petDoB,
+          petPfp: binaryData,
+          petGender: petGender,
+          ownerId: decodedToken.id,
+        });
 
-                              db.query('SELECT * FROM Pet where id = ? and petName = ?', [decodedToken.id, petName], (peterr, petresult) => {
-                                    console.log(petresult);
-                                    if (peterr) {
-                                          console.log(peterr);
-                                    } else {
+        await newPet.save();
 
-                                          db.query('SELECT * FROM Procedural WHERE petType = ? AND procName = ?', [petType, 'core vaccination'], async (error, procresult) => {
-                                                if (error) {
-                                                    console.log(error);
-                                                } else {
-                                                    console.log(procresult);
-                                                    if (procresult && procresult.length > 0) {
-                                                        for (let i = 0; i < procresult.length; i++) {
-                                                            db.query('INSERT INTO Appointment SET ?', { petID: petresult[0].petID, procID: procresult[i].procID, status: 'info' });
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                    }
-                              })
-                        })
-                  }
-            })}
-      } catch (error) {
-            console.log(error);
+        const petResult = await Pet.findOne({ ownerId: decodedToken.id, petName: petName });
+
+        // Example logic for appointments and procedures (you need to adapt this)
+        // Appointment and Procedure logic need to be redesigned for MongoDB
+        // The following code is just a placeholder to demonstrate the flow, adjust accordingly
+
+        // Handling Appointments
+        const proceduralData = await Procedural.find({ petType: petType, procName: 'core vaccination' });
+        if (proceduralData && proceduralData.length > 0) {
+          for (let i = 0; i < proceduralData.length; i++) {
+            const appointment = new Appointment({
+              petID: petResult._id,
+              procID: proceduralData[i]._id,
+              status: 'info',
+            });
+            await appointment.save();
+            const reapp = await Appointment.find({ petID: petResult._id });
+            // Additional logic for manipulating dates can be implemented here
+            console.log(reapp);
+          }
+        }
+
+        // Return success response
+        return res.json({ status: 'success', success: 'Your pet is ready!' });
       }
-}
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: 'error', error: 'Something went wrong' });
+  }
+};
+
+// Define a MongoDB schema for Procedures
+const proceduralSchema = new mongoose.Schema({
+  petType: String,
+  procName: String,
+});
+
+// Define a MongoDB model for Procedures
+const Procedural = mongoose.model('Procedural', proceduralSchema);
+
+// Define a MongoDB schema for Appointments
+const appointmentSchema = new mongoose.Schema({
+  petID: mongoose.Schema.Types.ObjectId,
+  procID: mongoose.Schema.Types.ObjectId,
+  status: String,
+});
+
+// Define a MongoDB model for Appointments
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+
 //module.exports = petregister;

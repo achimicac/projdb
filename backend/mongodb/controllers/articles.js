@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user';    
-import Pet from '../models/pet';     
-import Article from '../models/article';
+import {User} from '../models/user.js';    
+import {Pet} from '../models/pet.js';     
+import {Article} from '../models/article.js';
 
 export const article = async (req, res, next) => {
     const userRegisteredCookie = req.cookies.userRegistered;

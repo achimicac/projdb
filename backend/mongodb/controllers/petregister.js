@@ -1,15 +1,15 @@
-import Pet from '../models/pet';
-import Procedure from '../models/procedural';
-import Appointment from '../models/appointment';
-import jwt from 'jsonwebtoken';
+import {Pet }from '../models/pet.js';
+import {Procedural} from '../models/procedural.js';
+import { Appointment} from '../models/appointment.js';
+import jwt from 'jsonwebtoken'
+const saltRounds = 10;
 
 export const petregister = async (req, res) => {
     const userRegisteredCookie = req.cookies.userRegistered;
     const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
 
-    const { petName, petType, petDoB, petGender } = req.body;
-    const { petPfp } = req.files;
-
+    const { petName, petType, petDoB, petGender, petPfp} = req.body;
+    
     try {
         if (!petName || !petType || !petDoB || !petPfp || !petGender) {
             return res.json({
@@ -18,6 +18,7 @@ export const petregister = async (req, res) => {
             });
         } else {
             const existingPet = await Pet.findOne({ id: decodedToken.id, petName });
+const binaryData = Buffer.from(petPfp.dataUrl.split(',')[1], 'base64'); 
 
             if (existingPet) {
                 return res.json({ status: "error", error: `${petName} has already been registered.` });
@@ -27,7 +28,7 @@ export const petregister = async (req, res) => {
                 petName,
                 petType,
                 petDoB,
-                petPfp,
+                binaryData,
                 petGender,
                 id: decodedToken.id,
             });

@@ -1,6 +1,6 @@
-import Pet from '../models/pet';  // Assuming you have a Pet model
+import {Pet} from '../models/pet.js';  // Assuming you have a Pet model
 
-export const petProfile = async (req, res, next) => {
+export const petprofile = async (req, res, next) => {
     try {
         const petId = req.params.petid;
 

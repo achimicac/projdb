@@ -117,8 +117,16 @@
     margin-bottom: 60px;
 }
 
+.vaccinelist .Completed,
+.vaccinelist .Incomplete,
+.vaccinelist .ongoing {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .vaccinelist td:nth-child(1) {
-    padding: 0 30px;
+    grid-column: 1;
+    padding: 12px 0;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-bottom-left-radius: 10px;
     text-align: center;
@@ -127,7 +135,8 @@
 }
 
 .vaccinelist td:nth-child(2) {
-    padding: 12px 40px;
+    padding: 12px 0;
+    grid-column: 2;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-bottom-left-radius: 10px;
     text-align: center;
@@ -135,12 +144,22 @@
 }
 
 .vaccinelist td:nth-child(3) {
-    padding-left: 40px;
+    padding: 12px 0;
+    grid-column: 3;
     -webkit-border-top-right-radius: 10px;
     -webkit-border-bottom-right-radius: 10px;
     background-color: white;
 
 }
+
+.vaccinelist td:nth-child(4) {
+    grid-column: 3;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    background-color: white;
+
+}
+
 
 .petInfo th {
     display: none;

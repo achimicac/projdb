@@ -19,7 +19,7 @@ app.use("/css", express.static(path.join(__dirname + "/public/css")));*/
 app.set("views", "./views");*/
 app.use("/uploads", express.static('../uploads'));
 app.use(cookieParser());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true, limit: '25mb'}));
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json()); //Can read the json file that get from user register.html
 /*

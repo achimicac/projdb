@@ -15,6 +15,7 @@ import Profile from "./pages/userprof/Profile";
 import Addpet from "./pages/Addpet/Addpet";
 import Records from "./pages/Record/Record";
 import EditUser from "./pages/EditUser/EditUser";
+import Addrecord from "./pages/AddRecord/addrecord";
 
 function App() {
 
@@ -34,8 +35,11 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/userprofile" element={<Profile />} />
                 <Route path="/appointment/:appid" element={<Calendar />} />
-                <Route path="/records" element={<Records />} />
+                <Route path="/petprofile/:petid/record" element={<Records />} />
+                <Route path="/petprofile/:petid/record/addrecord" element={<Addrecord />} />
                 <Route path="/userprofile/edit" element={<EditUser />} />
+                <Route path="/petprofile/:petid/delete" element={<EditPet />} />
+                
         </Routes>
     </BrowserRouter>
   );
