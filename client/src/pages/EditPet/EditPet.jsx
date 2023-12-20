@@ -82,7 +82,7 @@ const EditPet = () => {
     useEffect(() => {
         const fetchPetData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/petprofile/${petid}`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3010/petprofile/${petid}`); // Replace with your API endpoint
                 setPet(response.data[0]);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -107,7 +107,7 @@ const EditPet = () => {
 
         try {
             
-            const resEdit = await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, data, {
+            const resEdit = await axios.put(`http://localhost:3010/petprofile/${petid}/edit`, data, {
                 withCredentials: true,
             }); // Replace with your API endpoint
             if (resEdit.data.status === "success") {

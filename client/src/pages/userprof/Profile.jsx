@@ -13,7 +13,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await axios.get("http://localhost:3009/userprofile");
+                const res = await axios.get("http://localhost:3010/userprofile");
                 setProfile(res.data);
             } catch (err) {
                 console.log(err);
@@ -23,7 +23,7 @@ const Profile = () => {
     }, []);
 
     const handleLogout = async () => {
-        axios.get('http://localhost:3009/logout')
+        axios.get('http://localhost:3010/logout')
         .then(res => {
             window.location.reload(true);
         })

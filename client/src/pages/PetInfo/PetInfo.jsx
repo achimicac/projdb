@@ -22,7 +22,7 @@ const PetInfo = () => {
         // Fetch data from the first path
         const fetchPet = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/petprofile/${petid}`);
+                const response = await axios.get(`http://localhost:3010/petprofile/${petid}`);
 
                 setPet(response.data[0]);
             } catch (error) {
@@ -34,7 +34,7 @@ const PetInfo = () => {
         const fetchVaccine = async () => {
             try {
                 
-                const response = await axios.get(`http://localhost:3009/petprofile/${petid}/vaccine`);
+                const response = await axios.get(`http://localhost:3010/petprofile/${petid}/vaccine`);
                 setVaccine(response.data);
             } catch (error) {
                 console.error('Error fetching vaccine data:', error);
@@ -50,7 +50,7 @@ const PetInfo = () => {
     const handleDelete = async (id) => {
         try {
             
-            const deletePet = await axios.put(`http://localhost:3009/petprofile/${petid}/delete`)
+            const deletePet = await axios.put(`http://localhost:3010/petprofile/${petid}/delete`)
             if(deletePet.data.status === 'success'){
                 navigate('/home')
             }

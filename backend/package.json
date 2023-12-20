@@ -2,7 +2,7 @@
   "name": "appvaccine",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -36,7 +36,8 @@
     "mysql2": "^3.6.5",
     "nodemailer": "^6.9.7",
     "passport": "^0.6.0",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "install": "^0.13.0",

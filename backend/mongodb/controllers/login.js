@@ -1,4 +1,4 @@
-import {User} from '../models/user.js';  // Assuming you have a User model
+import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -8,61 +8,57 @@ export const login = async (req, res) => {
         console.log("From login" + username + " " + pw);
 
         if (!username || !pw) {
-            return res.json({
+            return res.status(400).json({
                 status: "error",
                 error: "Please enter your username and password",
             });
+        }
+
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                error: "Account not found or incorrect password",
+            });
+        }
+
+        const storedHashedPassword = user.password; // Assuming 'password' field stores hashed password
+
+        const isMatch = await bcrypt.compare(pw, storedHashedPassword);
+
+        if (isMatch) {
+            const id = user._id;
+            const token = jwt.sign(
+                { id: id },
+                process.env.JWT_SECRET,
+                {
+                    expiresIn: process.env.JWT_EXPIRES || "30m",
+                }
+            );
+            const cookieOptions = {
+                expires: new Date(
+                    Date.now() + (parseInt(process.env.COOKIE_EXPIRES) || 1) * 24 * 60 * 60 * 1000
+                ),
+                httpOnly: true,
+                path: '/',
+            };
+
+            res.cookie("userRegistered", token, cookieOptions);
+            return res.status(200).json({
+                status: "success",
+                success: "User logged in",
+                token,
+                cookieOptions,
+            });
         } else {
-            const user = await User.findOne({ username });
-
-            if (!user) {
-                return res.json({
-                    status: "error",
-                    error: "Account not found or incorrect password",
-                });
-            } else {
-                const storedHashedPassword = user.pw;
-
-                bcrypt.compare(pw, storedHashedPassword, (error, isMatch) => {
-                    if (error) {
-                        throw error;
-                    }
-
-                    if (isMatch) {
-                        const id = user._id;
-                        const token = jwt.sign(
-                            { id: id },
-                            process.env.JWT_SECRET,
-                            {
-                                expiresIn: "30m", // or use process.env.JWT_EXPIRES
-                            }
-                        );
-                        const cookieOptions = {
-                            expiresIn: new Date(
-                                Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                            ),
-                            httpOnly: true,
-                            path: '/',
-                        };
-
-                        res.cookie("userRegistered", token, cookieOptions);
-                        res.status(200).json({
-                            status: "success",
-                            success: "User logged in",
-                            token,
-                            cookieOptions,
-                        });
-                    } else {
-                        return res.json({
-                            status: "error",
-                            error: "Account not found or incorrect password",
-                        });
-                    }
-                });
-            }
+            return res.status(401).json({
+                status: "error",
+                error: "Account not found or incorrect password",
+            });
         }
     } catch (err) {
         console.log(err);
-        res.json({ status: "error", error: "Something went wrong" });
+        res.status(500).json({ status: "error", error: "Something went wrong" });
     }
 };

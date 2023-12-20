@@ -33,7 +33,7 @@ const Register = () => {
         try {
 
             // Send the registration data to your server
-            const response = await axios.post('http://localhost:3009/register', formData)
+            const response = await axios.post('http://localhost:3010/register', formData)
 
             // Handle the response accordingly
             if(response.data.status === "error"){

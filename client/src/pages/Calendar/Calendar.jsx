@@ -22,8 +22,8 @@ const Calendar = () => {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/calendar`); 
-                setShowapp(response.data);
+                const response = await axios.get(`http://localhost:3010/calendar`); 
+                setShowapp(response.data[0]);
             } catch (error) {
                 console.error('Error fetching to do list:', error);
             }
@@ -31,6 +31,7 @@ const Calendar = () => {
 
         fetchAppointments();
     }, []);
+    console.log(showapp)
 
     const handleChange = (e) => {
         setAppoint({ ...appointment, [e.target.name]: e.target.value });
@@ -40,7 +41,7 @@ const Calendar = () => {
 
         try {
             const updatedAppointment = { ...appointment, status: !appointment.status ? '' : 'completed' };
-            await axios.put(`http://localhost:3009/appointment `, appointment); 
+            await axios.put(`http://localhost:3010/appointment `, appointment); 
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -51,7 +52,7 @@ const Calendar = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/appointment`, appointment); 
+            await axios.put(`http://localhost:3010/appointment`, appointment); 
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -67,7 +68,7 @@ const Calendar = () => {
         const requestData = {
             selectedMonth: selectedMonth
         };
-        axios.post('http://localhost:3009/upload', requestData)
+        axios.post('http://localhost:3010/upload', requestData)
             .then(res => {
                 if (res.data.Status === "success") {
                     console.log("Select Month Success");

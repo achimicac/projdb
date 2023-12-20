@@ -17,7 +17,7 @@ const EditUser = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/userprofile`); 
+                const response = await axios.get(`http://localhost:3010/userprofile`); 
                 setUser(response.data[0]);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -32,7 +32,7 @@ const EditUser = () => {
         e.preventDefault();
 
         try {
-            const resEdit = await axios.put(`http://localhost:3009/userprofile/edit`, user); 
+            const resEdit = await axios.put(`http://localhost:3010/userprofile/edit`, user); 
             if (resEdit.data.status === "success") {
                 alert(resEdit.data.success);
                 navigate(`/userprofile`) //why

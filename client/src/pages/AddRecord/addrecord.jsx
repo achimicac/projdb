@@ -3,71 +3,46 @@ import { useState } from 'react';
 import '../AddRecord/styleaddrecord.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Addrecord = () => {
+const addrecord = () => {
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
-    const { petid } = useParams();
-
-    const [pet, setPet] = useState({
-      procName: "",
-      date: "",
-      petType: "",
-      forGender: "",
+    const [record, setRecord] = useState({
+        procedure: "",
+        procedureDate: ""
     });
 
-    const [file, setFile] = useState(null)
-    axios.defaults.withCredentials = true;
+    /*axios.defaults.withCredentials = true;*/
 
 
     const handleChange = (e) => {
-        const { name , value, files } = e.target;
+        const { name , value } = e.target;
+        setRecord({
+            ...record,
+            [name]: value,
+        });
 
-        if (name === 'petPfp') {
-            const reader = new FileReader();
-            const file = files[0];
-
-            reader.onloadend = () => {
-                setPet({
-                    ...pet,
-                    [name]: {
-                        file,
-                        dataUrl: reader.result,
-                    },
-                });
-            };
-            if (file) {
-                reader.readAsDataURL(file);
-            } 
-        } else {
-            setPet({
-                ...pet,
-                [name]: value,
-            });
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         const data = {
-            procName: pet.procName,
-            date: pet.date,
-            petType: pet.petType,
-            forGender: pet.forGender,
+            procedure: record.procedure,
+            procedureDate: record.procedureDate,
         };
         console.log(data)
         
         try{
-            const respet = await axios.post("http://localhost:3009/petprofile/${petid}/record/addrecord", data, {
+            const respet = await axios.post("http://localhost:3009/petregister", data, {
                 withCredentials: true,
             })
             if(respet.data.status === "error") {
                 alert(respet.data.error)
             } else {
                 alert(respet.data.success)
-                navigate(`/petprofile/${petid}/record`)
+                navigate('/home')
             }
         }
         catch(err){console.error(err)}
@@ -91,11 +66,11 @@ const Addrecord = () => {
         <main>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div class="textinfo">
-                    <label for="name">Record</label>
-                    <input id="name" type="text" placeholder="Name" name="petName" value={pet.petName} onChange={ handleChange }/>
+                    <h2>Procedure</h2>
+                    <input id="name" type="text" name= "procedure" onChange={ handleChange }/>
 
-                    <label for="DoB">Date:</label>
-                    <input id="DoB" type="date" name="petDoB" value={pet.petDoB} onChange={ handleChange }/>
+                    <label for="Date">Date:</label>
+                        <input id="DoB" type="date" name="procedureDate" onChange={ handleChange }/>
                     <div class="CancelAndSubmit">
                         <button id="cancel" class="button">Cancel</button>
                         <button id="submit" className="button" type="submit" name="submit" variant="primary">Submit</button>
@@ -113,4 +88,4 @@ const Addrecord = () => {
     )
 }
 
-export default Addrecord;
+export default addrecord;

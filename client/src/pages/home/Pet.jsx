@@ -16,7 +16,7 @@ const Pet = () => {
 
     useEffect(()=>{
         
-        axios.get('http://localhost:3009/').then(res => {
+        axios.get('http://localhost:3010/').then(res => {
             if (res.data.status === "success") {
                 setAuth(true)
                 navigate('/login')
@@ -27,7 +27,7 @@ const Pet = () => {
 
         const fetchAllPets = async ()=>{
             try{
-                const respone = await axios.get("http://localhost:3009/home");
+                const respone = await axios.get("http://localhost:3010/home");
                 setPet(respone.data);
             }catch(err){
                 console.log(err);

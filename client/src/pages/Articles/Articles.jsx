@@ -12,7 +12,7 @@ const Articles = () => {
     useEffect(() => {
         const fetchAllArticles = async () => {
             try {
-                const res = await axios.get('http://localhost:3009/articles');
+                const res = await axios.get('http://localhost:3010/articles');
                 setArticles(res.data);
             } catch (err) {
                 console.log(err);

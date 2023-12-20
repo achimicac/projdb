@@ -56,7 +56,7 @@ const Addpet = () => {
         console.log(data)
         
         try{
-            const respet = await axios.post("http://localhost:3009/petregister", data, {
+            const respet = await axios.post("http://localhost:3010/petregister", data, {
                 withCredentials: true,
             })
             if(respet.data.status === "error") {

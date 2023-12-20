@@ -17,7 +17,7 @@ const Records = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const res = await axios.get(`http://localhost:3009/petprofile/${petid}/record`);
+                const res = await axios.get(`http://localhost:3010/petprofile/${petid}/record`);
                 setRecords(res.data);
             } catch (err) {
                 console.log(err);

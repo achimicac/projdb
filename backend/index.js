@@ -3,7 +3,7 @@ import {db} from './routes/db-config.js';
 import cors from "cors";
 const app = express();
 import path from "path";
-const port = process.env.PORT || 3009;
+const port = process.env.PORT || 3010;
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
